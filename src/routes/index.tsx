@@ -14,42 +14,41 @@ import Guest from "./Guest";
 import Loading from "../pages/guest/Loading";
 
 export default function Routes() {
-	// instances
-	const dispatch = useAppDispatch();
-	const { authSuccess, checked } = useAppSelector((state) => state.auth);
+  // instances
+  const dispatch = useAppDispatch();
+  const { authSuccess, checked } = useAppSelector((state) => state.auth);
 
-	const cookieToken = Cookies.get("token") as string;
+  const cookieToken = Cookies.get("token") as string;
 
-	// handlers
-	const handleValidateToken = async (token: string) => {
-		validate(token)
-			.then((res) => {
-				if (res.data.meta.success) {
-					dispatch(unSetAuth());
-				} else {
-					dispatch(unSetAuth());
-				}
-			})
-			.catch((err) => {
-				// console.log(err);
-				dispatch(unSetAuth());
-			});
-	};
+  // handlers
+  const handleValidateToken = async (token: string) => {
+    validate(token)
+      .then((res) => {
+        if (res.data.meta.success) {
+          dispatch(unSetAuth());
+        } else {
+          dispatch(unSetAuth());
+        }
+      })
+      .catch((err) => {
+        dispatch(unSetAuth());
+      });
+  };
 
-	useEffect(() => {
-		if (!checked && cookieToken === "") {
-			dispatch(unSetAuth());
-		} else if (!checked && cookieToken !== "") {
-			handleValidateToken(cookieToken);
-		}
-	}, [cookieToken]);
+  useEffect(() => {
+    if (!checked && cookieToken === "") {
+      dispatch(unSetAuth());
+    } else if (!checked && cookieToken !== "") {
+      handleValidateToken(cookieToken);
+    }
+  }, [cookieToken]);
 
-	if (!checked) {
-		return <Loading />;
-	}
-	if (checked && authSuccess) {
-		return <Admin />;
-	} else if (checked && !authSuccess) {
-		return <Guest />;
-	}
+  if (!checked) {
+    return <Loading />;
+  }
+  if (checked && authSuccess) {
+    return <Admin />;
+  } else if (checked && !authSuccess) {
+    return <Guest />;
+  }
 }

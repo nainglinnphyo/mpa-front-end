@@ -15,6 +15,8 @@ import { login } from "../../apis/main/auth";
 
 //components
 import { useSnackbar } from "../../components/snackbar";
+import { dispatch } from "../../store";
+import { setAuth } from "../../store/reducers/auth";
 
 interface loginFormProps {
   username: string;
@@ -57,9 +59,27 @@ const LoginForm = () => {
 
   const onSubmit = async (data: loginFormProps) => {
     login({ username: data.username, password: data.password })
-      .then((res) => {})
+      .then((res) => {
+        if (res.data.meta.success) {
+          dispatch(
+            setAuth({
+              token: res.data.body.token,
+              user: res.data.body,
+            })
+          );
+          enqueueSnackbar(res.data.meta.message, {
+            variant: "success",
+          });
+        } else {
+          enqueueSnackbar(res.data.meta.message, {
+            variant: "error",
+          });
+        }
+      })
       .catch((err) => {
-        console.log(err);
+        enqueueSnackbar(err.message, {
+          variant: "success",
+        });
       });
   };
 
