@@ -29,7 +29,7 @@ export const authSlice = createSlice({
 			const { user, token } = action.payload;
 			Cookies.set("token", token);
 			state: {
-				(state.checked = true),
+				     (state.checked = true),
 					(state.authSuccess = true),
 					(state.user = user),
 					(state.token = token);
