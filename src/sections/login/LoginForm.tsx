@@ -80,7 +80,7 @@ const LoginForm = () => {
             <BoxWrapper>
               <Box sx={{ mb: 2 }}>
                 <TypographyStyled variant="h4">
-                  Welcome to Back 👋🏻
+                  Welcome Back 👋🏻
                 </TypographyStyled>
                 <Typography variant="body2" color="text.secondary">
                   Please sign-in to your account and start the adventure
