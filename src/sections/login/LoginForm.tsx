@@ -12,6 +12,9 @@ import {
 } from "@mui/material";
 import { RHFTextField } from "../../components/form";
 import { login } from "../../apis/main/auth";
+import { useAppDispatch } from "../../store/hooks";
+import { setAuth, unSetAuth } from "../../store/reducers/auth";
+import Cookies from "js-cookie";
 
 interface loginFormProps {
 	username: string;
@@ -33,6 +36,7 @@ const TypographyStyled = styled(Typography)(({ theme }) => ({
 }));
 
 const LoginForm = () => {
+	const dispatch = useAppDispatch();
 	const LoginSchema = Yup.object().shape({
 		username: Yup.string().required("username is required"),
 		password: Yup.string().required("Password is required."),
@@ -53,9 +57,26 @@ const LoginForm = () => {
 
 	const onSubmit = async (data: loginFormProps) => {
 		login({ username: data.username, password: data.password })
-			.then((res) => {})
+			.then((res) => {
+				if (res.data.meta.success) {
+					Cookies.set("token", res.data.body.token);
+					dispatch(
+						setAuth({
+							token: res.data.body.token,
+							user: {
+								id: res.data.body.id,
+								username: res.data.body.username,
+							},
+						})
+					);
+				} else {
+					alert("Login Failed.");
+					dispatch(unSetAuth());
+				}
+			})
 			.catch((err) => {
 				console.log(err);
+				dispatch(unSetAuth());
 			});
 	};
 

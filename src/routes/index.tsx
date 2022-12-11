@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 
+import { validate } from "../apis/main/auth";
+
 // redux
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setAuth, unSetAuth } from "../store/reducers/auth";
-
-// api
-import { validate } from "../apis/main/auth";
 
 // components
 import Admin from "./Admin";
@@ -16,22 +15,28 @@ import Loading from "../pages/guest/Loading";
 export default function Routes() {
 	// instances
 	const dispatch = useAppDispatch();
-	const { authSuccess, checked } = useAppSelector((state) => state.auth);
+	const { checked, authSuccess } = useAppSelector((state) => state.auth);
 
 	const cookieToken = Cookies.get("token") as string;
 
-	// handlers
 	const handleValidateToken = async (token: string) => {
 		validate(token)
 			.then((res) => {
 				if (res.data.meta.success) {
-					dispatch(unSetAuth());
+					dispatch(
+						setAuth({
+							token: token,
+							user: {
+								id: res.data.body.id,
+								username: res.data.body.username,
+							},
+						})
+					);
 				} else {
 					dispatch(unSetAuth());
 				}
 			})
 			.catch((err) => {
-				// console.log(err);
 				dispatch(unSetAuth());
 			});
 	};
@@ -44,12 +49,11 @@ export default function Routes() {
 		}
 	}, [cookieToken]);
 
-	if (!checked) {
-		return <Loading />;
-	}
 	if (checked && authSuccess) {
 		return <Admin />;
 	} else if (checked && !authSuccess) {
 		return <Guest />;
+	} else {
+		return <Loading />;
 	}
 }

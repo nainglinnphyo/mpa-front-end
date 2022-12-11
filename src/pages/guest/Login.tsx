@@ -13,12 +13,6 @@ function Login() {
 		// width: "100%",
 		height: "100%",
 		backgroundColor: "#ff0000",
-		// [theme.breakpoints.down("lg")]: {
-		// 	maxWidth: "35rem",
-		// },
-		// [theme.breakpoints.up("xl")]: {
-		// 	minWidth: "59rem",
-		// },
 	}));
 
 	const LoginIllustrationWrapper = styled(Box)(({ theme }) => ({

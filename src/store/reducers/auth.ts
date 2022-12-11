@@ -2,20 +2,28 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
 // FIXME: change user from any to object type
+interface IUser {
+	id: string;
+	username: string;
+}
+
 interface IAuth {
-	user: any;
+	user: IUser;
 	token: string;
 	authSuccess: boolean;
 	checked: boolean;
 }
 
 interface IAuthPayload {
-	user: any;
+	user: IUser;
 	token: string;
 }
 
 const initialState: IAuth = {
-	user: {},
+	user: {
+		username: "",
+		id: "",
+	},
 	token: "",
 	authSuccess: false,
 	checked: false,
@@ -27,7 +35,6 @@ export const authSlice = createSlice({
 	reducers: {
 		setAuth: (state, action: PayloadAction<IAuthPayload>) => {
 			const { user, token } = action.payload;
-			Cookies.set("token", token);
 			state: {
 				     (state.checked = true),
 					(state.authSuccess = true),
@@ -40,7 +47,10 @@ export const authSlice = createSlice({
 			state: {
 				(state.checked = true),
 					(state.authSuccess = false),
-					(state.user = ""),
+					(state.user = {
+						username: "",
+						id: "",
+					}),
 					(state.token = "");
 			}
 		},
