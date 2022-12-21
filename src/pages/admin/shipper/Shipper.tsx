@@ -21,28 +21,29 @@ import {
 	TableHeadCustom,
 	TableSelectedAction,
 	TablePaginationCustom,
+	TableSkeleton,
 } from "../../../components/table";
 // sections
 import { ShipperTableToolbar, ShipperTableRow } from "./components";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { getShipper } from "../../../store/reducers/shipper";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-	{ id: "countryOrigin", label: "Country Origin", align: "center" },
-	{ id: "countryReturn", label: "Country Return", align: "center" },
-	{ id: "createdBy", label: "Created By", align: "center" },
-	{ id: "createdAt", label: "Created At", align: "center" },
-	{ id: "action", label: "Action", align: "right" },
+	{ id: "name", label: "Shipper Name", align: "center" },
+	{ id: "address", label: "Address", align: "center" },
+	{ id: "created_at", label: "Created Date", align: "center" },
+	{ id: "", label: "action", align: "center" },
 ];
 
 // ----------------------------------------------------------------------
 
-export interface CountryList {
+export interface ShipperList {
 	id: string;
-	countryOrigin: string;
-	countryReturn: string;
-	createdBy: string;
-	createdAt: string;
+	name: string;
+	address: string;
+	created_at: string;
 }
 
 export default function UserPage() {
@@ -65,13 +66,18 @@ export default function UserPage() {
 		onChangeRowsPerPage,
 	} = useTable();
 
-	const [tableData, setTableData] = useState<CountryList[]>([]);
+	const [tableData, setTableData] = useState<ShipperList[]>([]);
 
 	const [filterName, setFilterName] = useState("");
 
 	const [filterRole, setFilterRole] = useState("all");
 
 	const [filterStatus, setFilterStatus] = useState("all");
+
+	const dispatch = useAppDispatch();
+	const { data, isLoading } = useAppSelector((state) => state.shipper);
+	const { token } = useAppSelector((state) => state.auth);
+
 
 	const dataFiltered = applyFilter({
 		inputData: tableData,
@@ -124,65 +130,14 @@ export default function UserPage() {
 	};
 
 	useEffect(() => {
-		setTableData([
-			{
-				id: "1",
-				countryOrigin: "Myanmar",
-				countryReturn: "China",
-				createdAt: new Date().toISOString(),
-				createdBy: "Admin",
-			},
-			{
-				id: "2",
-				countryOrigin: "Myanmar",
-				countryReturn: "India",
-				createdAt: new Date().toISOString(),
-				createdBy: "Admin",
-			},
-			{
-				id: "3",
-				countryOrigin: "Myanmar",
-				countryReturn: "Spain",
-				createdAt: new Date().toISOString(),
-				createdBy: "Admin",
-			},
-			{
-				id: "4",
-				countryOrigin: "Myanmar",
-				countryReturn: "Korea",
-				createdAt: new Date().toISOString(),
-				createdBy: "Admin",
-			},
-			{
-				id: "5",
-				countryOrigin: "Myanmar",
-				countryReturn: "China",
-				createdAt: new Date().toISOString(),
-				createdBy: "Admin",
-			},
-			{
-				id: "6",
-				countryOrigin: "Myanmar",
-				countryReturn: "India",
-				createdAt: new Date().toISOString(),
-				createdBy: "Admin",
-			},
-			{
-				id: "7",
-				countryOrigin: "Myanmar",
-				countryReturn: "Spain",
-				createdAt: new Date().toISOString(),
-				createdBy: "Admin",
-			},
-			{
-				id: "8",
-				countryOrigin: "Myanmar",
-				countryReturn: "Korea",
-				createdAt: new Date().toISOString(),
-				createdBy: "Admin",
-			},
-		]);
-	}, []);
+		dispatch(getShipper(token))
+	}, [token, dispatch]);
+
+	useEffect(() => {
+		if (data.length) {
+			setTableData(data);
+		}
+	}, [data]);
 
 	return (
 		<Container maxWidth="xl">
@@ -239,18 +194,23 @@ export default function UserPage() {
 						/>
 
 						<TableBody>
-							{dataFiltered
+							{(isLoading ? [...Array(rowsPerPage)] : dataFiltered)
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((row) => (
-									<ShipperTableRow
-										key={row.id}
-										row={row}
-										selected={selected.includes(row.id)}
-										onSelectRow={() => onSelectRow(row.id)}
-										onDeleteRow={() => handleDeleteRow(row.id)}
-										onEditRow={() => handleEditRow(row.countryOrigin)}
-									/>
-								))}
+								.map((row, index) =>
+									row ? (
+										<ShipperTableRow
+											key={row.id}
+											row={row}
+											selected={selected.includes(row.id)}
+											onSelectRow={() => onSelectRow(row.id)}
+											onDeleteRow={() => handleDeleteRow(row.id)}
+											onEditRow={() => handleEditRow(row.id)}
+										/>
+									) : (
+										!isNotFound && <TableSkeleton key={index} sx={{ height: denseHeight }} />
+									)
+								)}
+
 
 							<TableEmptyRows
 								height={denseHeight}
@@ -287,7 +247,7 @@ function applyFilter({
 	filterStatus,
 	filterRole,
 }: {
-	inputData: CountryList[];
+	inputData: ShipperList[];
 	comparator: (a: any, b: any) => number;
 	filterName: string;
 	filterStatus: string;
@@ -306,7 +266,7 @@ function applyFilter({
 	if (filterName) {
 		inputData = inputData.filter(
 			(user) =>
-				user.countryOrigin.toLowerCase().indexOf(filterName.toLowerCase()) !==
+				user.name.toLowerCase().indexOf(filterName.toLowerCase()) !==
 				-1
 		);
 	}

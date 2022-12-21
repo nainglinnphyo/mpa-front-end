@@ -77,7 +77,7 @@ export default function TableHeadCustom({
 								onClick={() => onSort(headCell.id)}
 								sx={{ textTransform: "capitalize" }}
 							>
-								{headCell.id}
+								{headCell.label}
 
 								{orderBy === headCell.id ? (
 									<Box sx={{ ...visuallyHidden }}>

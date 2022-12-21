@@ -9,13 +9,13 @@ import Routes from "./routes";
 
 const App = () => {
 	return (
-		<ThemeProvider>
-			<Provider store={store}>
-				<BrowserRouter>
-					<Routes />
-				</BrowserRouter>
-			</Provider>
-		</ThemeProvider>
+		// <ThemeProvider>
+		<Provider store={store}>
+			<BrowserRouter>
+				<Routes />
+			</BrowserRouter>
+		</Provider>
+		//  </ThemeProvider> 
 	);
 };
 

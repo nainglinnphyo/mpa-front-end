@@ -9,13 +9,13 @@ import {
 } from "@mui/material";
 import Iconify from "../../../../components/iconify";
 import MenuPopover from "../../../../components/menu-popover";
-import { CountryList } from "../Shipper";
+import { ShipperList } from "../Shipper";
 import moment from "moment";
 
 // ----------------------------------------------------------------------
 
 type Props = {
-	row: CountryList;
+	row: ShipperList;
 	selected: boolean;
 	onEditRow: VoidFunction;
 	onSelectRow: VoidFunction;
@@ -29,7 +29,7 @@ export default function ShipperTableRow({
 	onSelectRow,
 	onDeleteRow,
 }: Props) {
-	const { countryOrigin, countryReturn, id, createdAt, createdBy } = row;
+	const { id, name, address, created_at } = row;
 
 	const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -58,19 +58,15 @@ export default function ShipperTableRow({
 					<Checkbox checked={selected} onClick={onSelectRow} />
 				</TableCell>
 
-				<TableCell align="center">{countryOrigin}</TableCell>
+				<TableCell align="center">{name}</TableCell>
 
-				<TableCell align="center">{countryReturn}</TableCell>
-
-				<TableCell align="center" sx={{ textTransform: "capitalize" }}>
-					{createdBy}
-				</TableCell>
+				<TableCell align="center">{address}</TableCell>
 
 				<TableCell align="center" sx={{ textTransform: "capitalize" }}>
-					{moment(createdAt || moment()).format("DD/MM/YYYY hh:mm:ss A")}
+					{moment(created_at || moment()).format("DD/MM/YYYY hh:mm:ss A")}
 				</TableCell>
 
-				<TableCell align="right">
+				<TableCell align="center">
 					<IconButton
 						color={openPopover ? "inherit" : "default"}
 						onClick={handleOpenPopover}
