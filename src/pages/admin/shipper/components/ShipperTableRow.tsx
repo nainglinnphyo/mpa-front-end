@@ -100,7 +100,7 @@ export default function ShipperTableRow({
 					}}
 				>
 					<Iconify icon="eva:edit-fill" />
-					Edit
+					Edit 
 				</MenuItem>
 			</MenuPopover>
 		</>
