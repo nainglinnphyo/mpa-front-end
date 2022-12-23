@@ -6,6 +6,7 @@ import Static from "../pages/admin/Static";
 import Country from "../pages/admin/country/Country";
 import ShipperPage from "../pages/admin/shipper/Shipper";
 import ShipPage from "../pages/admin/ship/Ship";
+import ShipArrivalPage from "../pages/admin/shiparrival/ShipArrival";
 
 const Admin = () => {
 	return useRoutes([
@@ -33,6 +34,10 @@ const Admin = () => {
 				{
 					path: "ship",
 					element: <ShipPage />,
+				},
+				{
+					path: "ship-arrival",
+					element: <ShipArrivalPage />,
 				},
 			],
 		},

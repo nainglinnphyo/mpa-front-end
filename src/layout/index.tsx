@@ -10,7 +10,13 @@ import { Outlet } from "react-router-dom";
 import { Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const navItems = ["Dashboard", "Country", "Shipper","Ship"];
+const navItems = [
+	{ name: "Dashboard", path: "dashboard" },
+	{ name: "Country", path: "country" },
+	{ name: "Shipper", path: "shipper" },
+	{ name: "Ship", path: "ship" },
+	{ name: "Ship Arrival", path: "ship-arrival" },
+];
 
 export default function DrawerAppBar() {
 	const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -44,11 +50,11 @@ export default function DrawerAppBar() {
 					<Box sx={{ display: { xs: "none", sm: "block" } }}>
 						{navItems.map((item) => (
 							<Button
-								key={item}
+								key={item.path}
 								sx={{ color: "#fff" }}
-								onClick={() => navigate(`/dashboard/${item.toLowerCase()}`)}
+								onClick={() => navigate(`/dashboard/${item.path.toLowerCase()}`)}
 							>
-								{item}
+								{item.name}
 							</Button>
 						))}
 					</Box>
