@@ -4,48 +4,47 @@ import { dispatch } from "..";
 const URL = import.meta.env.VITE_APP_SERVER_URL;
 
 
-interface IShipperData {
+interface IShipData {
      id: string;
      name: string;
-     address: string;
      created_at: string;
 }
 
-interface IShipper {
+interface IShiper {
      isLoading: boolean;
-     data: IShipperData[];
+     data: IShipData[];
      error: any
 }
-const initialState: IShipper = {
+const initialState: IShiper = {
      isLoading: false,
      data: [],
      error: ''
 };
 
-export const shipperSlice = createSlice({
+export const shipSlice = createSlice({
      name: "auth",
      initialState,
      reducers: {
           startLoading(state) {
                state.isLoading = true;
           },
-          setShipper(state, action) {
+          setShip(state, action) {
                state.isLoading = false;
                state.data = action.payload;
           },
-          getShipperError(state, action) {
+          getShipError(state, action) {
                state.isLoading = false;
                state.error = action.payload;
           },
      },
 });
 
-export function getShipper(token: string) {
+export function getShip(token: string) {
      return async () => {
-          dispatch(shipperSlice.actions.startLoading());
+          dispatch(shipSlice.actions.startLoading());
           try {
                const resWithAxios = await axios({
-                    url: `${URL}shipper/fetch`,
+                    url: `${URL}ship/fetch`,
                     method: 'GET',
                     headers: {
                          'Content-Type': 'application/json; charset=UTF-8',
@@ -56,23 +55,22 @@ export function getShipper(token: string) {
                     .then((response) => response)
                     .catch((err) => err.response);
                if (resWithAxios.data.meta.success) {
-                    let temp: IShipperData[] = await resWithAxios.data.body.map((item: any) => ({
+                    let temp: IShipData[] = await resWithAxios.data.body.map((item: any) => ({
                          id: item.id,
                          name: item.name,
-                         address: item.address,
                          created_at: item.created_at,
                     }));
-                    dispatch(shipperSlice.actions.setShipper(temp));
+                    dispatch(shipSlice.actions.setShip(temp));
                } else {
-                    dispatch(shipperSlice.actions.getShipperError('Shipper not found.'));
+                    dispatch(shipSlice.actions.getShipError('Shipnot found.'));
                }
           } catch (error) {
-               dispatch(shipperSlice.actions.getShipperError(error));
+               dispatch(shipSlice.actions.getShipError(error));
           }
      };
 }
 
-export default shipperSlice.reducer;
+export default shipSlice.reducer;
 
 
 

@@ -10,7 +10,7 @@ import { Outlet } from "react-router-dom";
 import { Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const navItems = ["Dashboard", "Country", "Shipper"];
+const navItems = ["Dashboard", "Country", "Shipper","Ship"];
 
 export default function DrawerAppBar() {
 	const [mobileOpen, setMobileOpen] = React.useState(false);

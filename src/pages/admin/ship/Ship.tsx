@@ -24,30 +24,27 @@ import {
 	TableSkeleton,
 } from "../../../components/table";
 // sections
-import { ShipperTableToolbar, ShipperTableRow } from "./components";
+import { ShipTableToolbar, ShipTableRow } from "./components";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { getShipper } from "../../../store/reducers/shipper";
-import { getPort } from "../../../store/reducers/port";
+import { getShip } from "../../../store/reducers/ship";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
 	{ id: "name", label: "Shipper Name", align: "center" },
-	{ id: "address", label: "Address", align: "center" },
 	{ id: "created_at", label: "Created Date", align: "center" },
 	{ id: "", label: "action", align: "center" },
 ];
 
 // ----------------------------------------------------------------------
 
-export interface ShipperList {
+export interface ShipList {
 	id: string;
 	name: string;
-	address: string;
 	created_at: string;
 }
 
-export default function Shipper() {
+export default function Ship() {
 	const {
 		dense,
 		page,
@@ -67,7 +64,7 @@ export default function Shipper() {
 		onChangeRowsPerPage,
 	} = useTable();
 
-	const [tableData, setTableData] = useState<ShipperList[]>([]);
+	const [tableData, setTableData] = useState<ShipList[]>([]);
 
 	const [filterName, setFilterName] = useState("");
 
@@ -76,7 +73,7 @@ export default function Shipper() {
 	const [filterStatus, setFilterStatus] = useState("all");
 
 	const dispatch = useAppDispatch();
-	const { data, isLoading } = useAppSelector((state) => state.shipper);
+	const { data, isLoading } = useAppSelector((state) => state.ship);
 	const { token } = useAppSelector((state) => state.auth);
 
 
@@ -131,8 +128,7 @@ export default function Shipper() {
 	};
 
 	useEffect(() => {
-		dispatch(getShipper(token))
-		dispatch(getPort(token))
+		dispatch(getShip(token))
 	}, [token, dispatch]);
 
 	useEffect(() => {
@@ -151,7 +147,7 @@ export default function Shipper() {
 					mt: 2,
 				}}
 			>
-				<ShipperTableToolbar
+				<ShipTableToolbar
 					isFiltered={isFiltered}
 					filterName={filterName}
 					onFilterName={handleFilterName}
@@ -200,7 +196,7 @@ export default function Shipper() {
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row, index) =>
 									row ? (
-										<ShipperTableRow
+										<ShipTableRow
 											key={row.id}
 											row={row}
 											selected={selected.includes(row.id)}
@@ -249,7 +245,7 @@ function applyFilter({
 	filterStatus,
 	filterRole,
 }: {
-	inputData: ShipperList[];
+	inputData: ShipList[];
 	comparator: (a: any, b: any) => number;
 	filterName: string;
 	filterStatus: string;

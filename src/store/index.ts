@@ -2,12 +2,16 @@ import { configureStore } from "@reduxjs/toolkit";
 
 // reducers
 import AuthReducer from "./reducers/auth";
-import ShipReducer from "./reducers/shipper";
+import ShipperReducer from "./reducers/shipper";
+import ShipReducer from "./reducers/ship";
+import PortReducer from "./reducers/port";
 
 const store = configureStore({
 	reducer: {
 		auth: AuthReducer,
-		shipper: ShipReducer,
+		shipper: ShipperReducer,
+		ship: ShipReducer,
+		port: PortReducer,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({ serializableCheck: false }),
