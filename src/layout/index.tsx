@@ -92,6 +92,9 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Link, useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import kyaw from "../assets/kyaw.jpg";
+import { dispatch } from "../store";
+import { unSetAuth } from "../store/reducers/auth";
+import Cookies from "js-cookie";
 
 interface INavItems {
   name: string;
@@ -99,7 +102,6 @@ interface INavItems {
 }
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const navItems: INavItems[] = [
   { name: "Dashboard", path: "dashboard" },
@@ -135,6 +137,30 @@ const Layout = () => {
   };
 
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    dispatch(unSetAuth());
+  };
+
+  const settings = [
+    {
+      title: "Profile",
+      method: () => {},
+    },
+    {
+      title: "Account",
+      method: () => {},
+    },
+    {
+      title: "Dashboard",
+      method: () => {},
+    },
+    {
+      title: "Logout",
+      method: handleLogout,
+    },
+  ];
 
   return (
     <>
@@ -261,9 +287,15 @@ const Layout = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                {settings.map((setting, key: React.Key) => (
+                  <MenuItem key={key} onClick={handleCloseUserMenu}>
+                    <Button
+                      key={key}
+                      sx={{ color: "#000" }}
+                      onClick={() => setting.method()}
+                    >
+                      {setting.title}
+                    </Button>
                   </MenuItem>
                 ))}
               </Menu>
