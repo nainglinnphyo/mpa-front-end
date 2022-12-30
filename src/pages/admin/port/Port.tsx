@@ -33,6 +33,7 @@ import { getPort } from "../../../store/reducers/port";
 const TABLE_HEAD = [
   { id: "name", label: "Name", align: "center" },
   { id: "created_at", label: "Created Date", align: "center" },
+  { id: "", label: "action" },
 ];
 
 // ----------------------------------------------------------------------
