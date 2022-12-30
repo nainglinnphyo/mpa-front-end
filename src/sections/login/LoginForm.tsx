@@ -14,6 +14,9 @@ import { login } from "../../apis/main/auth";
 import { useAppDispatch } from "../../store/hooks";
 import { setAuth, unSetAuth } from "../../store/reducers/auth";
 import Cookies from "js-cookie";
+// import LoadingButton from "../../theme/overrides/LoadingButton";
+import { LoadingButton } from "@mui/lab";
+import { useState } from "react";
 
 interface loginFormProps {
   username: string;
@@ -35,6 +38,8 @@ const TypographyStyled = styled(Typography)(({ theme }) => ({
 }));
 
 const LoginForm = () => {
+  //state
+  const [isloading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const LoginSchema = Yup.object().shape({
     username: Yup.string().required("username is required"),
@@ -45,19 +50,14 @@ const LoginForm = () => {
     resolver: yupResolver(LoginSchema),
   });
 
-  const {
-    reset,
-    register,
-    control,
-    handleSubmit,
-
-    formState: { isSubmitting, errors },
-  } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = async (data: loginFormProps) => {
+    setIsLoading(true);
     login({ username: data.username, password: data.password })
       .then((res) => {
         if (res.data.meta.success) {
+          setIsLoading(false);
           Cookies.set("token", res.data.body.token);
           dispatch(
             setAuth({
@@ -69,12 +69,14 @@ const LoginForm = () => {
             })
           );
         } else {
+          setIsLoading(false);
           alert("Login Failed.");
           dispatch(unSetAuth());
         }
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
         dispatch(unSetAuth());
       });
   };
@@ -122,10 +124,15 @@ const LoginForm = () => {
                   <Typography variant="body2">Remember Me</Typography>
                 </Stack>
               </Stack>
-              <Stack mt={2} sx={{ height: "20px" }}>
-                <Button variant="contained" type="submit">
+              <Stack mt={2}>
+                <LoadingButton
+                  loading={isloading}
+                  variant="contained"
+                  type="submit"
+                  sx={{ height: "50px" }}
+                >
                   Login
-                </Button>
+                </LoadingButton>
               </Stack>
             </BoxWrapper>
           </form>
