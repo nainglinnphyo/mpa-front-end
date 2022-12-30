@@ -8,15 +8,15 @@ import store from "./store";
 import Routes from "./routes";
 
 const App = () => {
-	return (
-		// <ThemeProvider>
-		<Provider store={store}>
-			<BrowserRouter>
-				<Routes />
-			</BrowserRouter>
-		</Provider>
-		//  </ThemeProvider> 
-	);
+  return (
+    <ThemeProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
+  );
 };
 
 export default App;

@@ -3,7 +3,6 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Typography,
-  Alert,
   Checkbox,
   Button,
   Stack,
@@ -97,7 +96,7 @@ const LoginForm = () => {
             <BoxWrapper>
               <Box sx={{ mb: 2 }}>
                 <TypographyStyled variant="h4">
-                  Welcome to Back 👋🏻
+                  Welcome Back 👋🏻
                 </TypographyStyled>
                 <Typography variant="body2" color="text.secondary">
                   Please sign-in to your account and start the adventure
@@ -123,7 +122,7 @@ const LoginForm = () => {
                   <Typography variant="body2">Remember Me</Typography>
                 </Stack>
               </Stack>
-              <Stack mt={2}>
+              <Stack mt={2} sx={{ height: "20px" }}>
                 <Button variant="contained" type="submit">
                   Login
                 </Button>
