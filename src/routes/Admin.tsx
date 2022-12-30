@@ -1,13 +1,16 @@
 import React from "react";
 import { useRoutes, Navigate } from "react-router-dom";
 import Layout from "../layout";
-import Dashboard from "../pages/admin/Dashboard";
 import Static from "../pages/admin/Static";
-import Country from "../pages/admin/country/Country";
-import ShipperPage from "../pages/admin/shipper/Shipper";
-import ShipPage from "../pages/admin/ship/Ship";
-import ShipArrivalPage from "../pages/admin/shiparrival/ShipArrival";
-import Port from "../pages/admin/port/Port";
+
+import {
+  DashBoard,
+  Country,
+  Port,
+  Ship,
+  ShipArrival,
+  Shipper,
+} from "./elements";
 
 const Admin = () => {
   return useRoutes([
@@ -18,7 +21,7 @@ const Admin = () => {
       children: [
         {
           path: "",
-          element: <Dashboard />,
+          element: <DashBoard />,
         },
         {
           path: "static",
@@ -30,15 +33,15 @@ const Admin = () => {
         },
         {
           path: "shipper",
-          element: <ShipperPage />,
+          element: <Shipper />,
         },
         {
           path: "ship",
-          element: <ShipPage />,
+          element: <Ship />,
         },
         {
           path: "ship-arrival",
-          element: <ShipArrivalPage />,
+          element: <ShipArrival />,
         },
         {
           path: "port",
