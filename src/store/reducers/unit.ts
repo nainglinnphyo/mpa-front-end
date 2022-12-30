@@ -21,7 +21,7 @@ const initialState: IUnit = {
 };
 
 export const UnitSlice = createSlice({
-  name: "auth",
+  name: "unit",
   initialState,
   reducers: {
     startLoading(state) {
@@ -38,7 +38,7 @@ export const UnitSlice = createSlice({
   },
 });
 
-export function getShip(token: string) {
+export function getUnit(token: string) {
   return async () => {
     dispatch(UnitSlice.actions.startLoading());
     try {

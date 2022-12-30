@@ -10,6 +10,7 @@ import {
   Ship,
   ShipArrival,
   Shipper,
+  Unit,
 } from "./elements";
 
 const Admin = () => {
@@ -46,6 +47,10 @@ const Admin = () => {
         {
           path: "port",
           element: <Port />,
+        },
+        {
+          path: "unit",
+          element: <Unit />,
         },
       ],
     },

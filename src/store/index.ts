@@ -6,18 +6,20 @@ import ShipperReducer from "./reducers/shipper";
 import ShipReducer from "./reducers/ship";
 import PortReducer from "./reducers/port";
 import CountryReducer from "./reducers/country";
+import UnitReducer from "./reducers/unit";
 
 const store = configureStore({
-	reducer: {
-		auth: AuthReducer,
-		shipper: ShipperReducer,
-		ship: ShipReducer,
-		port: PortReducer,
-		country: CountryReducer,
-	},
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware({ serializableCheck: false }),
-	devTools: true,
+  reducer: {
+    auth: AuthReducer,
+    shipper: ShipperReducer,
+    ship: ShipReducer,
+    port: PortReducer,
+    country: CountryReducer,
+    unit: UnitReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
+  devTools: true,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

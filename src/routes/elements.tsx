@@ -39,3 +39,6 @@ export const Shipper = Loadable(
 export const ShipArrival = Loadable(
   lazy(() => import("../pages/admin/shiparrival/ShipArrival"))
 );
+
+//unit
+export const Unit = Loadable(lazy(() => import("../pages/admin/unit/index")));

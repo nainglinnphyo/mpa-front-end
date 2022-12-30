@@ -108,6 +108,7 @@ const navItems: INavItems[] = [
   { name: "Ship", path: "ship" },
   { name: "Ship Arrival", path: "ship-arrival" },
   { name: "Port", path: "port" },
+  { name: "Unit", path: "unit" },
 ];
 
 const Layout = () => {
