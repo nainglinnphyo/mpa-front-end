@@ -164,7 +164,7 @@ const Layout = () => {
 
   return (
     <>
-      <AppBar position="sticky">
+      <AppBar position="sticky" sx={{ zIndex: 10 }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -303,7 +303,9 @@ const Layout = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <Outlet />
+      <Box sx={{ mt: 8 }}>
+        <Outlet />
+      </Box>
     </>
   );
 };
