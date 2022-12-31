@@ -9,13 +9,13 @@ import {
 } from "@mui/material";
 import Iconify from "../../../../components/iconify";
 import MenuPopover from "../../../../components/menu-popover";
-import { ShipperList } from "../ShipArrival";
+import { ShipArrivalList } from "../ShipArrival";
 import moment from "moment";
 
 // ----------------------------------------------------------------------
 
 type Props = {
-	row: ShipperList;
+	row: ShipArrivalList;
 	selected: boolean;
 	onEditRow: VoidFunction;
 	onSelectRow: VoidFunction;
@@ -29,7 +29,7 @@ export default function ShipArrivalTableRow({
 	onSelectRow,
 	onDeleteRow,
 }: Props) {
-	const { id, name, address, created_at } = row;
+	const { id, arrivalDate, blFinish, countryOrigin, countryReturn, returnDate, createdDate, port, ship, voyageNumber } = row;
 
 	const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -58,12 +58,18 @@ export default function ShipArrivalTableRow({
 					<Checkbox checked={selected} onClick={onSelectRow} />
 				</TableCell>
 
-				<TableCell align="center">{name}</TableCell>
+				<TableCell align="center">{voyageNumber}</TableCell>
 
-				<TableCell align="center">{address}</TableCell>
-
+				<TableCell align="center">{blFinish}</TableCell>
+				<TableCell align="center">{ship}</TableCell>
+				<TableCell align="center">{port}</TableCell>
+				<TableCell align="center">{countryOrigin}</TableCell>
+				<TableCell align="center">{countryReturn}</TableCell>
 				<TableCell align="center" sx={{ textTransform: "capitalize" }}>
-					{moment(created_at || moment()).format("DD/MM/YYYY hh:mm:ss A")}
+					{moment(arrivalDate || moment()).format("DD/MM/YYYY hh:mm:ss A")}
+				</TableCell>
+				<TableCell align="center" sx={{ textTransform: "capitalize" }}>
+					{moment(returnDate || moment()).format("DD/MM/YYYY hh:mm:ss A")}
 				</TableCell>
 
 				<TableCell align="center">
@@ -100,7 +106,7 @@ export default function ShipArrivalTableRow({
 					}}
 				>
 					<Iconify icon="eva:edit-fill" />
-					Edit 
+					Edit
 				</MenuItem>
 			</MenuPopover>
 		</>
