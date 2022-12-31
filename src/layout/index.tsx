@@ -91,9 +91,9 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link, useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import kyaw from "../assets/kyaw.jpg";
 import { dispatch } from "../store";
 import { unSetAuth } from "../store/reducers/auth";
+import ship from "../assets/react.svg";
 import Cookies from "js-cookie";
 
 interface INavItems {
@@ -265,10 +265,7 @@ const Layout = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    alt="Kyaw Zin Thant"
-                    src="/static/images/avatar/2.jpg"
-                  />
+                  <Avatar alt="Kyaw Zin Thant" src={ship} />
                 </IconButton>
               </Tooltip>
               <Menu
