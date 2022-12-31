@@ -6,15 +6,18 @@ import ThemeProvider from "./theme";
 // custom components
 import store from "./store";
 import Routes from "./routes";
+import SnackbarProvider from "./components/snackbar";
 
 const App = () => {
   return (
     <ThemeProvider>
-      <Provider store={store}>
-        <BrowserRouter>
-          <Routes />
-        </BrowserRouter>
-      </Provider>
+      <SnackbarProvider>
+        <Provider store={store}>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </Provider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 };

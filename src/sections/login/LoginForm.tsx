@@ -13,10 +13,12 @@ import { RHFTextField } from "../../components/form";
 import { login } from "../../apis/main/auth";
 import { useAppDispatch } from "../../store/hooks";
 import { setAuth, unSetAuth } from "../../store/reducers/auth";
+
 import Cookies from "js-cookie";
 // import LoadingButton from "../../theme/overrides/LoadingButton";
 import { LoadingButton } from "@mui/lab";
 import { useState } from "react";
+import { useSnackbar } from "../../components/snackbar";
 
 interface loginFormProps {
   username: string;
@@ -51,6 +53,7 @@ const LoginForm = () => {
   });
 
   const { handleSubmit } = methods;
+  const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit = async (data: loginFormProps) => {
     setIsLoading(true);
@@ -59,6 +62,8 @@ const LoginForm = () => {
         if (res.data.meta.success) {
           setIsLoading(false);
           Cookies.set("token", res.data.body.token);
+          enqueueSnackbar("Login Success.", { variant: "success" });
+
           dispatch(
             setAuth({
               token: res.data.body.token,
@@ -70,7 +75,8 @@ const LoginForm = () => {
           );
         } else {
           setIsLoading(false);
-          alert("Login Failed.");
+          enqueueSnackbar("Login Failed.", { variant: "error" });
+
           dispatch(unSetAuth());
         }
       })

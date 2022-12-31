@@ -14,12 +14,7 @@ const Loading = () => {
         width: "100%",
       }}
     >
-      <ReactLoading
-        type={"spokes"}
-        color={"#00AB55"}
-        height={100}
-        width={100}
-      />
+      <ReactLoading type={"spokes"} color={"#00AB55"} height={80} width={80} />
     </Box>
   );
 };
