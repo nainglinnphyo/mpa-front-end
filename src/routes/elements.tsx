@@ -42,3 +42,9 @@ export const ShipArrival = Loadable(
 
 //unit
 export const Unit = Loadable(lazy(() => import("../pages/admin/unit/index")));
+
+//new ship arrival
+
+export const NewShipArrival = Loadable(
+  lazy(() => import("../sections/shipArrival/new/New"))
+);

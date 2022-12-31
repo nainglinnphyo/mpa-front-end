@@ -1,30 +1,32 @@
 import { useState, useEffect } from "react";
 // @mui
 import {
-	Card,
-	Table,
-	Button,
-	Tooltip,
-	TableBody,
-	Container,
-	IconButton,
-	TableContainer,
-	TextField,
-	Stack,
+  Card,
+  Table,
+  Button,
+  Tooltip,
+  TableBody,
+  Container,
+  IconButton,
+  TableContainer,
+  TextField,
+  Stack,
 } from "@mui/material";
 // // components
 import Iconify from "../../../components/iconify/Iconify";
 import {
-	useTable,
-	getComparator,
-	emptyRows,
-	TableNoData,
-	TableEmptyRows,
-	TableHeadCustom,
-	TableSelectedAction,
-	TablePaginationCustom,
-	TableSkeleton,
+  useTable,
+  getComparator,
+  emptyRows,
+  TableNoData,
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSelectedAction,
+  TablePaginationCustom,
+  TableSkeleton,
 } from "../../../components/table";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+
 // sections
 import { ShipArrivalTableToolbar, ShipArrivalTableRow } from "./components";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -32,8 +34,9 @@ import { getShipper } from "../../../store/reducers/shipper";
 import { getPort } from "../../../store/reducers/port";
 import { getShipArrival } from "../../../store/reducers/shipArrival";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import moment from 'moment';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+import moment from "moment";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import CustomBreadcrumbs from "../../../components/custom-breadcrumbs";
 
 // ----------------------------------------------------------------------
 
@@ -165,8 +168,8 @@ export default function ShipArrivalPage() {
 	useEffect(() => {
 		dispatch(getShipArrival(token, value))
 		setTableData(data);
-	}, [token, dispatch, value]);
-
+	}, [token, dispatch,value]);
+	
 	useEffect(() => {
 		if (data.length) {
 			setTableData(data);
@@ -280,35 +283,34 @@ export default function ShipArrivalPage() {
 // ----------------------------------------------------------------------
 
 function applyFilter({
-	inputData,
-	comparator,
-	filterName,
-	filterStatus,
-	filterRole,
+  inputData,
+  comparator,
+  filterName,
+  filterStatus,
+  filterRole,
 }: {
-	inputData: ShipArrivalList[];
-	comparator: (a: any, b: any) => number;
-	filterName: string;
-	filterStatus: string;
-	filterRole: string;
+  inputData: ShipArrivalList[];
+  comparator: (a: any, b: any) => number;
+  filterName: string;
+  filterStatus: string;
+  filterRole: string;
 }) {
-	const stabilizedThis = inputData.map((el, index) => [el, index] as const);
+  const stabilizedThis = inputData.map((el, index) => [el, index] as const);
 
-	stabilizedThis.sort((a, b) => {
-		const order = comparator(a[0], b[0]);
-		if (order !== 0) return order;
-		return a[1] - b[1];
-	});
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
 
-	inputData = stabilizedThis.map((el) => el[0]);
+  inputData = stabilizedThis.map((el) => el[0]);
 
-	if (filterName) {
-		inputData = inputData.filter(
-			(user) =>
-				user.voyageNumber.toLowerCase().indexOf(filterName.toLowerCase()) !==
-				-1
-		);
-	}
+  if (filterName) {
+    inputData = inputData.filter(
+      (user) =>
+        user.voyageNumber.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+    );
+  }
 
-	return inputData;
+  return inputData;
 }

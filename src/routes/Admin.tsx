@@ -11,6 +11,7 @@ import {
   ShipArrival,
   Shipper,
   Unit,
+  NewShipArrival,
 } from "./elements";
 
 const Admin = () => {
@@ -42,7 +43,17 @@ const Admin = () => {
         },
         {
           path: "ship-arrival",
-          element: <ShipArrival />,
+          children: [
+            {
+              element: <Navigate to="/dashboard/ship-arrival/list" replace />,
+              index: true,
+            },
+            { path: "list", element: <ShipArrival /> },
+            {
+              path: "new",
+              element: <NewShipArrival />,
+            },
+          ],
         },
         {
           path: "port",
