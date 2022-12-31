@@ -64,14 +64,15 @@ export function getShipArrival(token: string, value: any) {
                     .then((response) => response)
                     .catch((err) => err.response);
                if (resWithAxios.data.meta.success) {
+                    console.log(resWithAxios.data.body)
                     let temp: IShipArrivalData[] = await resWithAxios.data.body.map((item: any) => ({
                          id: item.id,
                          voyageNumber: item.voyageNumber,
                          blFinish: item.blFinish,
                          ship: item.Ship.name,
                          port: item.Port.name,
-                         countryOrigin: item.countryOrigin.name,
-                         countryReturn: item.countryReturn.name,
+                         countryOrigin: item.countryOrigin.name || "",
+                         countryReturn: item.countryReturn.name || "",
                          arrivalDate: item.arrivalDate,
                          returnDate: item.returnDate,
                          createdDate: item.created_at,
