@@ -26,7 +26,6 @@ import {
 // sections
 import { UnitTableRow, UnitTableToolBar } from "./components";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { getPort } from "../../../store/reducers/port";
 import { getUnit } from "../../../store/reducers/unit";
 
 // ----------------------------------------------------------------------
@@ -74,7 +73,7 @@ export default function Unit() {
   const [filterStatus, setFilterStatus] = useState("all");
 
   const dispatch = useAppDispatch();
-  const { data, isLoading } = useAppSelector((state) => state.ship);
+  const { data, isLoading } = useAppSelector((state) => state.unit);
   const { token } = useAppSelector((state) => state.auth);
 
   const dataFiltered = applyFilter({

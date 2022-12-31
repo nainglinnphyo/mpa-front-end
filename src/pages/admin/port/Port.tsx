@@ -73,7 +73,7 @@ export default function Port() {
   const [filterStatus, setFilterStatus] = useState("all");
 
   const dispatch = useAppDispatch();
-  const { data, isLoading } = useAppSelector((state) => state.ship);
+  const { data, isLoading } = useAppSelector((state) => state.port);
   const { token } = useAppSelector((state) => state.auth);
 
   const dataFiltered = applyFilter({
