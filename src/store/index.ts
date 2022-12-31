@@ -7,6 +7,7 @@ import ShipReducer from "./reducers/ship";
 import PortReducer from "./reducers/port";
 import CountryReducer from "./reducers/country";
 import UnitReducer from "./reducers/unit";
+import ShipArrivalReducer from "./reducers/shipArrival";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     port: PortReducer,
     country: CountryReducer,
     unit: UnitReducer,
+    shipArrival: ShipArrivalReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
