@@ -30,6 +30,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 // sections
 import { ShipArrivalTableToolbar, ShipArrivalTableRow } from "./components";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import AddIcon from "@mui/icons-material/Add";
 import { getShipper } from "../../../store/reducers/shipper";
 import { getPort } from "../../../store/reducers/port";
 import { getShipArrival } from "../../../store/reducers/shipArrival";
@@ -37,6 +38,7 @@ import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import moment from "moment";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import CustomBreadcrumbs from "../../../components/custom-breadcrumbs";
+import { Box } from "@mui/system";
 
 // ----------------------------------------------------------------------
 
@@ -175,8 +177,21 @@ export default function ShipArrivalPage() {
     }
   }, [data]);
 
+  const navigate = useNavigate();
+
   return (
     <Container maxWidth="xl">
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
+        <Button
+          onClick={() => {
+            navigate("/dashboard/ship-arrival/new");
+          }}
+          startIcon={<AddIcon />}
+          variant="contained"
+        >
+          Create New Ship Arrival
+        </Button>
+      </Box>
       <Card
         sx={{
           width: "100%",
