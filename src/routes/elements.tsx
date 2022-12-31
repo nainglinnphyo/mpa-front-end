@@ -48,3 +48,7 @@ export const Unit = Loadable(lazy(() => import("../pages/admin/unit/index")));
 export const NewShipArrival = Loadable(
   lazy(() => import("../sections/shipArrival/new/New"))
 );
+
+export const ProductList = Loadable(
+  lazy(() => import("../pages/admin/productList/index"))
+);
