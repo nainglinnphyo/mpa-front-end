@@ -4,56 +4,47 @@ import { dispatch } from "..";
 const URL = import.meta.env.VITE_APP_SERVER_URL;
 
 
-interface IShipArrivalData {
+interface IPorductData {
      id: string;
-     voyageNumber: string;
-     blFinish: string;
-     ship: string;
-     port: string;
-     countryOrigin: string;
-     countryReturn: string;
-     arrivalDate: string;
-     returnDate: string;
+     name: string;
      createdDate: string;
 }
 
-interface IShipArrival {
+interface IPorductList {
      isLoading: boolean;
-     data: IShipArrivalData[];
+     data: IPorductData[];
      error: any
 }
-const initialState: IShipArrival = {
+const initialState: IPorductList = {
      isLoading: false,
      data: [],
      error: ''
 };
 
-export const shipArrivalSlice = createSlice({
-     name: "shipArrival",
+export const porductSlice = createSlice({
+     name: "productList",
      initialState,
      reducers: {
           startLoading(state) {
                state.isLoading = true;
           },
-          setShipArrival(state, action) {
+          setProductList(state, action) {
                state.isLoading = false;
                state.data = action.payload;
           },
-          getShipArrivalError(state, action) {
+          getProductListError(state, action) {
                state.isLoading = false;
                state.error = action.payload;
           },
      },
 });
 
-export function getShipArrival(token: string, value: any) {
-     const fromDate = value.fromDate.format("YYYY-MM-DD")
-     const toDate = value.toDate.format("YYYY-MM-DD")
+export function getProductList(token: string) {
      return async () => {
-          dispatch(shipArrivalSlice.actions.startLoading());
+          dispatch(porductSlice.actions.startLoading());
           try {
                const resWithAxios = await axios({
-                    url: `${URL}ship/fetch-ship-arrival?fromDate=${fromDate}&toDate=${toDate}`,
+                    url: `${URL}ship/fetch-product`,
                     method: 'GET',
                     headers: {
                          'Content-Type': 'application/json; charset=UTF-8',
@@ -64,26 +55,19 @@ export function getShipArrival(token: string, value: any) {
                     .then((response) => response)
                     .catch((err) => err.response);
                if (resWithAxios.data.meta.success) {
-                    let temp: IShipArrivalData[] = await resWithAxios.data.body.map((item: any) => ({
+                    let temp: IPorductData[] = await resWithAxios.data.body.map((item: any) => ({
                          id: item.id,
-                         voyageNumber: item.voyageNumber,
-                         blFinish: item.blFinish,
-                         ship: item.Ship.name,
-                         port: item.Port.name,
-                         countryOrigin: item.countryOrigin.name,
-                         countryReturn: item.countryReturn.name,
-                         arrivalDate: item.arrivalDate,
-                         returnDate: item.returnDate,
+                         name: item.name,
                          createdDate: item.created_at,
                     }));
-                    dispatch(shipArrivalSlice.actions.setShipArrival(temp));
+                    dispatch(porductSlice.actions.setProductList(temp));
                } else {
-                    dispatch(shipArrivalSlice.actions.getShipArrivalError('Ship Arrival not found.'));
+                    dispatch(porductSlice.actions.getProductListError('Ship Arrival not found.'));
                }
           } catch (error) {
-               dispatch(shipArrivalSlice.actions.getShipArrivalError(error));
+               dispatch(porductSlice.actions.getProductListError(error));
           }
      };
 }
 
-export default shipArrivalSlice.reducer;
+export default porductSlice.reducer;

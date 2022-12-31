@@ -37,6 +37,7 @@ import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import moment from "moment";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import CustomBreadcrumbs from "../../../components/custom-breadcrumbs";
+import { getProductList } from "../../../store/reducers/product";
 
 // ----------------------------------------------------------------------
 
@@ -164,6 +165,7 @@ export default function ShipArrivalPage() {
 
   useEffect(() => {
     dispatch(getShipArrival(token, value));
+    dispatch(getProductList(token));
     setTableData(data);
   }, [token, dispatch, value]);
 
