@@ -16,7 +16,6 @@ interface FormValuesProps {
      countryReturnId: string;
      arrivalDate: string;
      returnDate: string;
-     instockData: any;
 }
 
 function NewShipArrivalForm() {
