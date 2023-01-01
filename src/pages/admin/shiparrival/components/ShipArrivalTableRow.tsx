@@ -30,7 +30,6 @@ export default function ShipArrivalTableRow({
 	onDeleteRow,
 }: Props) {
 	const { id, arrivalDate, blFinish, countryOrigin, countryReturn, returnDate, createdDate, port, ship, voyageNumber } = row;
-
 	const [openConfirm, setOpenConfirm] = useState(false);
 
 	const [openPopover, setOpenPopover] = useState<HTMLElement | null>(null);
@@ -60,7 +59,7 @@ export default function ShipArrivalTableRow({
 
 				<TableCell align="center">{voyageNumber}</TableCell>
 
-				<TableCell align="center">{blFinish}</TableCell>
+				<TableCell align="center">{blFinish ? "Finish" : "Unfinish"}</TableCell>
 				<TableCell align="center">{ship}</TableCell>
 				<TableCell align="center">{port}</TableCell>
 				<TableCell align="center">{countryOrigin}</TableCell>

@@ -7,7 +7,7 @@ const URL = import.meta.env.VITE_APP_SERVER_URL;
 interface IShipArrivalData {
      id: string;
      voyageNumber: string;
-     blFinish: string;
+     blFinish: boolean;
      ship: string;
      port: string;
      countryOrigin: string;
@@ -49,6 +49,7 @@ export const shipArrivalSlice = createSlice({
 export function getShipArrival(token: string, value: any) {
      const fromDate = value.fromDate.format("YYYY-MM-DD")
      const toDate = value.toDate.format("YYYY-MM-DD")
+
      return async () => {
           dispatch(shipArrivalSlice.actions.startLoading());
           try {

@@ -60,7 +60,7 @@ const TABLE_HEAD = [
 export interface ShipArrivalList {
 	id: string;
 	voyageNumber: string;
-	blFinish: string;
+	blFinish: boolean;
 	ship: string;
 	port: string;
 	countryOrigin: string;
