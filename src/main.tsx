@@ -1,10 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import { LocalizationProvider } from "@mui/x-date-pickers";
+// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <App />/
+    </LocalizationProvider>
   </React.StrictMode>
-)
+);

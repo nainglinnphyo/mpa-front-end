@@ -7,16 +7,20 @@ import ThemeProvider from "./theme";
 import store from "./store";
 import Routes from "./routes";
 import SnackbarProvider from "./components/snackbar";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const App = () => {
   return (
     <ThemeProvider>
       <SnackbarProvider>
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
         <Provider store={store}>
           <BrowserRouter>
             <Routes />
           </BrowserRouter>
         </Provider>
+        {/* </LocalizationProvider> */}
       </SnackbarProvider>
     </ThemeProvider>
   );
