@@ -9,15 +9,17 @@ import { useForm } from 'react-hook-form';
 
 
 interface FormValuesProps {
-     supplier_id: string;
-     warehouse_id: string;
-     payment_method_id: string;
+     shipperId: string;
+     shipId: string;
+     portId: string;
+     countryOriginId: string;
+     countryReturnId: string;
+     arrivalDate: string;
+     returnDate: string;
      instockData: any;
 }
 
 function NewShipArrivalForm() {
-
-
 
      //hook form
      const newProductSchema = Yup.object().shape({
