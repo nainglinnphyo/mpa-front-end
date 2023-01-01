@@ -9,9 +9,6 @@ import {
   Container,
   IconButton,
   TableContainer,
-  TextField,
-  Stack,
-  Box,
 } from "@mui/material";
 // // components
 import Iconify from "../../../components/iconify/Iconify";
@@ -26,50 +23,30 @@ import {
   TablePaginationCustom,
   TableSkeleton,
 } from "../../../components/table";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-
 // sections
-import { ShipArrivalTableToolbar, ShipArrivalTableRow } from "./components";
+import { ProductListTableRow, ProductListTableToolbar } from "./components";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import AddIcon from "@mui/icons-material/Add";
-import { getShipper } from "../../../store/reducers/shipper";
 import { getPort } from "../../../store/reducers/port";
-import { getShipArrival } from "../../../store/reducers/shipArrival";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import moment from "moment";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import CustomBreadcrumbs from "../../../components/custom-breadcrumbs";
+import { PortTableToolbar } from "../port/components";
+import { getProductList } from "../../../store/reducers/product";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "voyageNumber", label: "Voyage Number", align: "center" },
-  { id: "blFinish", label: "BL Finish", align: "center" },
-  { id: "ship", label: "Ship", align: "center" },
-  { id: "port", label: "Port", align: "center" },
-  { id: "countryOrigin", label: "Country Origin", align: "center" },
-  { id: "countryReturn", label: "Country Return", align: "center" },
-  { id: "arrivalDate", label: "Arrival Date", align: "center" },
-  { id: "returnDate", label: "Return Date", align: "center" },
-  { id: "", label: "action", align: "center" },
+  { id: "name", label: "Name", align: "center" },
+  { id: "created_at", label: "Created Date", align: "center" },
+  { id: "", label: "action" },
 ];
 
 // ----------------------------------------------------------------------
 
-export interface ShipArrivalList {
-	id: string;
-	voyageNumber: string;
-	blFinish: boolean;
-	ship: string;
-	port: string;
-	countryOrigin: string;
-	countryReturn: string;
-	arrivalDate: string;
-	returnDate: string;
-	createdDate: string;
+export interface ProductList {
+  id: string;
+  name: string;
+  created_at: string;
 }
 
-export default function ShipArrivalPage() {
+export default function Port() {
   const {
     dense,
     page,
@@ -89,7 +66,7 @@ export default function ShipArrivalPage() {
     onChangeRowsPerPage,
   } = useTable();
 
-  const [tableData, setTableData] = useState<ShipArrivalList[]>([]);
+  const [tableData, setTableData] = useState<ProductList[]>([]);
 
   const [filterName, setFilterName] = useState("");
 
@@ -98,21 +75,8 @@ export default function ShipArrivalPage() {
   const [filterStatus, setFilterStatus] = useState("all");
 
   const dispatch = useAppDispatch();
-  const { data, isLoading } = useAppSelector((state) => state.shipArrival);
+  const { data, isLoading } = useAppSelector((state) => state.product);
   const { token } = useAppSelector((state) => state.auth);
-  const date = new Date();
-  const [value, setValue] = useState({
-    fromDate: moment(new Date(date.getFullYear(), date.getMonth(), 1)),
-    toDate: moment(new Date(date.getFullYear(), date.getMonth() + 1, 0)),
-    // toDate: moment(new Date(date.getFullYear(), date.getMonth() + 1, 0)).format("DD/MM/YYYY"),
-  });
-
-  const onFromDateChange = (newValue: any) => {
-    setValue({ ...value, fromDate: newValue });
-  };
-  const onToDateChange = (newValue: any) => {
-    setValue({ ...value, toDate: newValue });
-  };
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -165,34 +129,17 @@ export default function ShipArrivalPage() {
   };
 
   useEffect(() => {
-    dispatch(getShipArrival(token, value));
-    setTableData(data);
-  }, [token, dispatch, value]);
+    dispatch(getProductList(token));
+  }, [token, dispatch]);
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (data.length) {
       setTableData(data);
-    } else {
-      setTableData([]);
     }
   }, [data]);
 
-  const navigate = useNavigate();
-
   return (
     <Container maxWidth="xl">
-      <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
-        <Button
-          sx={{ height: "40px" }}
-          onClick={() => {
-            navigate("/dashboard/ship-arrival/new");
-          }}
-          startIcon={<AddIcon />}
-          variant="contained"
-        >
-          Create New Ship Arrival
-        </Button>
-      </Box>
       <Card
         sx={{
           width: "100%",
@@ -201,12 +148,8 @@ export default function ShipArrivalPage() {
           mt: 2,
         }}
       >
-        <ShipArrivalTableToolbar
-          fromDate={value.fromDate}
-          toDate={value.toDate}
-          onToDateChange={onToDateChange}
-          onFromDateChange={onFromDateChange}
-          isFiltered={isFiltered}
+        <PortTableToolbar
+          isFiltered={false}
           filterName={filterName}
           onFilterName={handleFilterName}
           onResetFilter={handleResetFilter}
@@ -254,7 +197,7 @@ export default function ShipArrivalPage() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) =>
                   row ? (
-                    <ShipArrivalTableRow
+                    <ProductListTableRow
                       key={row.id}
                       row={row}
                       selected={selected.includes(row.id)}
@@ -304,7 +247,7 @@ function applyFilter({
   filterStatus,
   filterRole,
 }: {
-  inputData: ShipArrivalList[];
+  inputData: ProductList[];
   comparator: (a: any, b: any) => number;
   filterName: string;
   filterStatus: string;
@@ -322,8 +265,7 @@ function applyFilter({
 
   if (filterName) {
     inputData = inputData.filter(
-      (user) =>
-        user.voyageNumber.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+      (user) => user.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
 
