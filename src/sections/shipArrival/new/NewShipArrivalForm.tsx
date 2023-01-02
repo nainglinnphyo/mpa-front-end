@@ -17,10 +17,17 @@ import { getCountry, ICountryData } from "../../../store/reducers/country";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { RootState } from "../../../store";
 import { getPort } from "../../../store/reducers/port";
-import { getShip } from "../../../store/reducers/ship";
+import ship, { getShip } from "../../../store/reducers/ship";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Chip, FormControl, FormHelperText, Grid } from "@mui/material";
+import CustomBreadcrumbs from "../../../components/custom-breadcrumbs/CustomBreadcrumbs";
+import {
+  Chip,
+  Container,
+  FormControl,
+  FormHelperText,
+  Grid,
+} from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
@@ -29,20 +36,24 @@ import { Box } from "@mui/system";
 interface FormValuesProps {
   shipId: string;
   portId: string;
-  countryOriginId: any;
-  countryReturnId: any;
+  countryOriginId: string;
+  countryReturnId: string;
   arrivalDate: string;
   returnDate: string;
 }
 
 function NewShipArrivalForm() {
+  //states
   const [shipList, setShipList] = useState<ShipList[]>([]);
   const [countryList, setCountryList] = useState<ICountryData[]>([]);
   const [portList, setPortList] = useState<PortList[]>([]);
 
   const [arrivalDate, setArrivalDate] = useState<any>("");
-
   const [returnDate, setReturnDate] = useState<any>("");
+  const [shipListData, setShipListData] = useState<string>("");
+  const [portListData, setPortListData] = useState<string>("");
+  const [countryOrigin, setCountryOrigin] = useState<string>("");
+  const [countryReturn, setCountryReturn] = useState<string>("");
 
   const { data: countryLists } = useAppSelector(
     (state: RootState) => state.country
@@ -77,37 +88,9 @@ function NewShipArrivalForm() {
     }
   }, [countryLists]);
 
-  console.log(countryList);
-
   //toadd country list
 
   //hook form
-
-  const newShipArrivalForm = Yup.object().shape({
-    ship_id: Yup.string().required("Ship is required"),
-    portId: Yup.string().required("port is required"),
-    countryOriginId: Yup.string().required(" country Origin is required"),
-    countryReturnId: Yup.string().required("country return is required"),
-    arrivalDate: Yup.string().required("arrival date is required"),
-    returnDate: Yup.string().required("return date is required"),
-  });
-
-  const methods = useForm<FormValuesProps>({
-    resolver: yupResolver(newShipArrivalForm),
-  });
-  const {
-    handleSubmit,
-    register,
-    setValue,
-    setError,
-    trigger,
-    control,
-    formState: { errors, isSubmitting },
-  } = methods;
-
-  const onSubmit = async (data: any) => {
-    console.log(data);
-  };
 
   const handleArrivalDate = (newValue: Dayjs | null) => {
     setArrivalDate(newValue);
@@ -117,100 +100,155 @@ function NewShipArrivalForm() {
     setReturnDate(newValue);
   };
 
-  useEffect(() => {
-    setValue("arrivalDate", arrivalDate);
-  }, [arrivalDate]);
+  const handleValueShip = (value: ShipList) => {
+    setShipListData(value.id);
+  };
 
-  useEffect(() => {
-    setValue("returnDate", returnDate);
-  }, [returnDate]);
+  const handleValuePort = (value: ShipList) => {
+    setPortListData(value.id);
+  };
+
+  const handleCountryOrigin = (value: ShipList) => {
+    setCountryOrigin(value.id);
+  };
+
+  const handleCountryReturn = (value: ShipList) => {
+    setCountryReturn(value.id);
+  };
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    const data: FormValuesProps = {
+      shipId: shipListData,
+      portId: portListData,
+      arrivalDate: arrivalDate,
+      countryOriginId: countryOrigin,
+      countryReturnId: countryReturn,
+      returnDate: returnDate,
+    };
+    console.log("data", data);
+  };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={shipList}
-            renderInput={(params) => (
-              <TextField {...params} label="Ship List" />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={portList.map((item) => item.name)}
-            renderInput={(params) => (
-              <TextField {...params} label="Port List" />
-            )}
-          />
-        </Grid>
+    <Container>
+      {/* <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}> */}
+      <CustomBreadcrumbs
+        heading="New Arrival Create"
+        links={[
+          { name: "Ship Arrival List", href: "/dashboard/ship-arrival/list" },
+          {
+            name: "New",
+          },
+        ]}
+      />
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Autocomplete
+              disablePortal
+              onChange={(event, value) => {
+                if (value) {
+                  handleValueShip(value);
+                }
+              }}
+              id="combo-box-demo"
+              options={shipList ? shipList : []}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField required {...params} label="Ship List" />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={portList ? portList : []}
+              onChange={(event, value) => {
+                if (value) {
+                  handleValuePort(value);
+                }
+              }}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField required {...params} label="Port List" />
+              )}
+            />
+          </Grid>
 
-        <Grid item xs={12} md={6}>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            //   options={countryList}
-            options={countryList.map((item) => item.name)}
-            renderInput={(params) => (
-              <TextField {...params} label="Country List" />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            //   options={shipList}
-            options={shipList.map((item) => item.name)}
-            renderInput={(params) => (
-              <TextField {...params} label="Ship List" />
-            )}
-          />
-        </Grid>
+          <Grid item xs={12} md={6}>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={countryList ? countryList : []}
+              onChange={(event, value) => {
+                if (value) {
+                  handleCountryOrigin(value);
+                }
+              }}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField required {...params} label="Country Origin" />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={countryList ? countryList : []}
+              onChange={(event, value) => {
+                if (value) {
+                  handleCountryReturn(value);
+                }
+              }}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField required {...params} label="Country Return" />
+              )}
+            />
+          </Grid>
 
-        <Grid item xs={12} md={6}>
-          <DesktopDatePicker
-            label="Arrival Date"
-            inputFormat="MM/dd/yyyy"
-            value={arrivalDate || null}
-            onChange={handleArrivalDate}
-            renderInput={(params) => <TextField fullWidth {...params} />}
-          />
-          {errors.arrivalDate?.message && (
-            <FormHelperText error>{errors.arrivalDate.message}</FormHelperText>
-          )}
-        </Grid>
+          <Grid item xs={12} md={6}>
+            <DesktopDatePicker
+              label="Arrival Date"
+              inputFormat="MM/dd/yyyy"
+              value={arrivalDate || null}
+              onChange={handleArrivalDate}
+              renderInput={(params) => (
+                <TextField required fullWidth {...params} />
+              )}
+            />
+          </Grid>
 
-        <Grid item xs={12} md={6}>
-          <DesktopDatePicker
-            label="Return Date"
-            inputFormat="MM/dd/yyyy"
-            value={returnDate || null}
-            onChange={handleReturnDate}
-            renderInput={(params) => <TextField fullWidth {...params} />}
-          />
-          {errors.returnDate?.message && (
-            <FormHelperText error>{errors.returnDate.message}</FormHelperText>
-          )}
+          <Grid item xs={12} md={6}>
+            <DesktopDatePicker
+              label="Return Date"
+              inputFormat="MM/dd/yyyy"
+              value={returnDate || null}
+              onChange={handleReturnDate}
+              renderInput={(params) => (
+                <TextField required fullWidth {...params} />
+              )}
+            />
+          </Grid>
         </Grid>
-      </Grid>
-
-      <Box sx={{ mt: 4 }}>
-        <LoadingButton
-          variant="contained"
-          color="success"
-          type="button"
-          onClick={handleSubmit(onSubmit)}
-          loading={isSubmitting}
+        <Box
+          sx={{ mt: 4, display: "flex", width: "100%", justifyContent: "end" }}
         >
-          CheckOut
-        </LoadingButton>
-      </Box>
-    </FormProvider>
+          <LoadingButton
+            variant="contained"
+            sx={{ width: "120px", height: "40px" }}
+            color="success"
+            type="submit"
+
+            // loading={isSubmitting}
+          >
+            Create
+          </LoadingButton>
+        </Box>
+      </form>
+    </Container>
   );
 }
 
