@@ -9,6 +9,8 @@ import {
 	Container,
 	IconButton,
 	TableContainer,
+	Typography,
+	Box,
 } from "@mui/material";
 // // components
 import Iconify from "../../../components/iconify/Iconify";
@@ -26,7 +28,6 @@ import {
 // sections
 import { BLTableToolbar, BLTableRow } from "./components";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { getShip } from "../../../store/reducers/ship";
 
 import { useLocation } from 'react-router-dom';
 import { BLData, fetchBillOfLanding } from "../../../apis/main/ship";
@@ -44,7 +45,7 @@ const TABLE_HEAD = [
 	{ id: "rate", label: "Rate", align: "center" },
 	{ id: "totalFreight", label: "Total Freight", align: "center" },
 	{ id: "remark", label: "Remark", align: "center" },
-	{ id: "createDate", label: "Created Date", align: "center" },
+	// { id: "createDate", label: "Created Date", align: "center" },
 	{ id: "", label: "action", align: "center" },
 ];
 
@@ -78,9 +79,6 @@ export default function BillOfLanding() {
 	const [filterRole, setFilterRole] = useState("all");
 
 	const [filterStatus, setFilterStatus] = useState("all");
-
-	const dispatch = useAppDispatch();
-	const { data, isLoading } = useAppSelector((state) => state.ship);
 	const { token } = useAppSelector((state) => state.auth);
 
 	const location = useLocation();
@@ -159,6 +157,11 @@ export default function BillOfLanding() {
 					mt: 2,
 				}}
 			>
+				<Box paddingLeft={3} paddingTop={3}>
+					<Typography fontWeight="bold">{location.state.shipName.toUpperCase()}</Typography>
+					<Typography fontWeight="bold">VOYAGE NO {location.state.voyageNumber.toUpperCase()}</Typography>
+					<Typography fontWeight="bold">SAILED YANGON DATE : {new Date(location.state.arrivalDate).toDateString()}</Typography>
+				</Box>
 				<BLTableToolbar
 					isFiltered={isFiltered}
 					filterName={filterName}
@@ -204,8 +207,7 @@ export default function BillOfLanding() {
 						/>
 
 						<TableBody>
-							{(isLoading ? [...Array(rowsPerPage)] : dataFiltered)
-								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+							{dataFiltered
 								.map((row, index) =>
 									row ? (
 										<BLTableRow

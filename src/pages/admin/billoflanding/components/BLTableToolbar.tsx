@@ -34,7 +34,7 @@ export default function BLTableToolbar({
 			}}
 			sx={{ px: 2.5, py: 3 }}
 		>
-			<TextField
+			{/* <TextField
 				fullWidth
 				value={filterName}
 				onChange={onFilterName}
@@ -46,7 +46,7 @@ export default function BLTableToolbar({
 						</InputAdornment>
 					),
 				}}
-			/>
+			/> */}
 
 			{isFiltered && (
 				<Button

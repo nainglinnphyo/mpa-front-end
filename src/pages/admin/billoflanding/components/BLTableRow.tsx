@@ -69,9 +69,9 @@ export default function BLTableRow({
 				<TableCell align="center">{totalFreight}</TableCell>
 				<TableCell align="center">{remark}</TableCell>
 
-				<TableCell align="center" sx={{ textTransform: "capitalize" }}>
+				{/* <TableCell align="center" sx={{ textTransform: "capitalize" }}>
 					{moment(createdDate || moment()).format("DD/MM/YYYY hh:mm:ss A")}
-				</TableCell>
+				</TableCell> */}
 
 				<TableCell align="center">
 					<IconButton
