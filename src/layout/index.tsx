@@ -147,15 +147,15 @@ const Layout = () => {
   const settings = [
     {
       title: "Profile",
-      method: () => {},
+      method: () => { },
     },
     {
       title: "Account",
-      method: () => {},
+      method: () => { },
     },
     {
       title: "Dashboard",
-      method: () => {},
+      method: () => { },
     },
     {
       title: "Logout",
@@ -301,7 +301,7 @@ const Layout = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <Box sx={{ mt: 8 }}>
+      <Box sx={{ mt: 5 }}>
         <Outlet />
       </Box>
     </>

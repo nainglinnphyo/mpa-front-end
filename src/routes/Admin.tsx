@@ -13,6 +13,7 @@ import {
   Unit,
   NewShipArrival,
   ProductList,
+  BillOfLandingList,
 } from "./elements";
 
 const Admin = () => {
@@ -53,6 +54,10 @@ const Admin = () => {
             {
               path: "new",
               element: <NewShipArrival />,
+            },
+            {
+              path: "bill-of-landing-list",
+              element: <BillOfLandingList />,
             },
           ],
         },

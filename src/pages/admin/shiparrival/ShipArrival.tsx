@@ -274,7 +274,7 @@ export default function ShipArrivalPage() {
                 emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
               />
 
-              <TableNoData isNotFound={isNotFound} />
+              <TableNoData isNotFound={isNotFound} /> 
             </TableBody>
           </Table>
           {/* </Scrollbar> */}

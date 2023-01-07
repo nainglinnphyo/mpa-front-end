@@ -9,33 +9,31 @@ import {
 } from "@mui/material";
 import Iconify from "../../../../components/iconify";
 import MenuPopover from "../../../../components/menu-popover";
-import { ShipArrivalList } from "../ShipArrival";
+
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { BLData } from "../../../../apis/main/ship";
 
 // ----------------------------------------------------------------------
 
 type Props = {
-	row: ShipArrivalList;
+	row: BLData;
 	selected: boolean;
 	onEditRow: VoidFunction;
 	onSelectRow: VoidFunction;
 	onDeleteRow: VoidFunction;
 };
 
-export default function ShipArrivalTableRow({
+export default function BLTableRow({
 	row,
 	selected,
 	onEditRow,
 	onSelectRow,
 	onDeleteRow,
 }: Props) {
-	const { id, arrivalDate, blFinish, countryOrigin, countryReturn, returnDate, createdDate, port, ship, voyageNumber } = row;
+	const { id, blNo, consigneeNotify, markAndNumber, freightTon, quantity, createdDate, product, rate, remark, shipper, totalFreight, unit } = row;
 	const [openConfirm, setOpenConfirm] = useState(false);
 
 	const [openPopover, setOpenPopover] = useState<HTMLElement | null>(null);
-	const navigate = useNavigate();
-
 
 	const handleOpenConfirm = () => {
 		setOpenConfirm(true);
@@ -44,10 +42,6 @@ export default function ShipArrivalTableRow({
 	const handleCloseConfirm = () => {
 		setOpenConfirm(false);
 	};
-
-	const handleBlList = () => {
-		navigate("/dashboard/ship-arrival/bill-of-landing-list", { state: { id: row.id } })
-	}
 
 	const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
 		setOpenPopover(event.currentTarget);
@@ -64,18 +58,19 @@ export default function ShipArrivalTableRow({
 					<Checkbox checked={selected} onClick={onSelectRow} />
 				</TableCell>
 
-				<TableCell align="center">{voyageNumber}</TableCell>
+				<TableCell align="center">{blNo}</TableCell>
+				<TableCell align="center">{shipper}</TableCell>
+				<TableCell align="center">{consigneeNotify}</TableCell>
+				<TableCell align="center">{markAndNumber}</TableCell>
+				<TableCell align="center">{product}</TableCell>
+				<TableCell align="center">{quantity} / {unit}</TableCell>
+				<TableCell align="center">{freightTon}</TableCell>
+				<TableCell align="center">{rate}</TableCell>
+				<TableCell align="center">{totalFreight}</TableCell>
+				<TableCell align="center">{remark}</TableCell>
 
-				<TableCell align="center">{blFinish ? "Finish" : "Unfinish"}</TableCell>
-				<TableCell align="center">{ship}</TableCell>
-				<TableCell align="center">{port}</TableCell>
-				<TableCell align="center">{countryOrigin}</TableCell>
-				<TableCell align="center">{countryReturn}</TableCell>
 				<TableCell align="center" sx={{ textTransform: "capitalize" }}>
-					{moment(arrivalDate || moment()).format("DD/MM/YYYY")}
-				</TableCell>
-				<TableCell align="center" sx={{ textTransform: "capitalize" }}>
-					{moment(returnDate || moment()).format("DD/MM/YYYY")}
+					{moment(createdDate || moment()).format("DD/MM/YYYY hh:mm:ss A")}
 				</TableCell>
 
 				<TableCell align="center">
@@ -94,16 +89,6 @@ export default function ShipArrivalTableRow({
 				arrow="right-top"
 				sx={{ width: 140 }}
 			>
-				<MenuItem
-					onClick={() => {
-						handleBlList();
-						handleClosePopover();
-					}}
-					sx={{ color: "green" }}
-				>
-					<Iconify icon="eva:eye-outline" />
-					Bill Of Landing
-				</MenuItem>
 				<MenuItem
 					onClick={() => {
 						handleOpenConfirm();

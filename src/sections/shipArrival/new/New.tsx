@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Container } from "@mui/system";
 import React from "react";
 import CustomBreadcrumbs from "../../../components/custom-breadcrumbs";
@@ -8,8 +8,9 @@ import NewShipArrivalForm from "./NewShipArrivalForm";
 
 const New = () => {
   return (
-    <Container>
-      {/* <CustomBreadcrumbs
+    <Container maxWidth="xl">
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "end"}}>
+        {/* <CustomBreadcrumbs
         heading="Create New Ship Arrival"
         links={[
           { name: "Dashboard", href: "./dashboard" },
@@ -17,7 +18,8 @@ const New = () => {
           { name: "List" },
         ]}
       /> */}
-      <NewShipArrivalForm/>
+        <NewShipArrivalForm />
+      </Box>
     </Container>
   );
 };

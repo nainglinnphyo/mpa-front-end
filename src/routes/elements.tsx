@@ -49,6 +49,12 @@ export const NewShipArrival = Loadable(
   lazy(() => import("../sections/shipArrival/new/New"))
 );
 
+//bl list
+export const BillOfLandingList = Loadable(
+  lazy(() => import("../pages/admin/billoflanding/BillOfLanding"))
+);
+
+
 export const ProductList = Loadable(
   lazy(() => import("../pages/admin/productList/index"))
 );
