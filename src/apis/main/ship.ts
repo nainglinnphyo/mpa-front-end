@@ -61,4 +61,15 @@ export const fetchBillOfLanding = async (token: any, id: any) => {
      }
 };
 
+export const createBillOfLanding = async (token: any, data: any) => {
+     return await axios({
+          url: `${URL}ship/create-bill-of-landing`,
+          method: "POST",
+          headers: authJsonHeader(token),
+          data: data,
+     });
+};
+
+
+
 

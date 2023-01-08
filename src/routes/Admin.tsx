@@ -14,6 +14,7 @@ import {
   NewShipArrival,
   ProductList,
   BillOfLandingList,
+  NewBLForm,
 } from "./elements";
 
 const Admin = () => {
@@ -58,6 +59,10 @@ const Admin = () => {
             {
               path: "bill-of-landing-list",
               element: <BillOfLandingList />,
+            },
+            {
+              path: "bill-of-landing-create",
+              element: <NewBLForm />,
             },
           ],
         },

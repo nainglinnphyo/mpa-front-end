@@ -46,7 +46,7 @@ export default function ShipArrivalTableRow({
 	};
 
 	const handleBlList = () => {
-		navigate("/dashboard/ship-arrival/bill-of-landing-list", { state: { id: row.id, voyageNumber: row.voyageNumber, shipName: row.ship, arrivalDate: row.arrivalDate } })
+		navigate("/dashboard/ship-arrival/bill-of-landing-list", { state: { id: row.id, voyageNumber: row.voyageNumber, shipName: row.ship, arrivalDate: row.arrivalDate, blFinish: row.blFinish } })
 	}
 
 	const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {

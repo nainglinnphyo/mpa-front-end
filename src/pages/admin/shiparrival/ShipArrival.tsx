@@ -32,13 +32,8 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { ShipArrivalTableToolbar, ShipArrivalTableRow } from "./components";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import AddIcon from "@mui/icons-material/Add";
-import { getShipper } from "../../../store/reducers/shipper";
-import { getPort } from "../../../store/reducers/port";
 import { getShipArrival } from "../../../store/reducers/shipArrival";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import moment from "moment";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import CustomBreadcrumbs from "../../../components/custom-breadcrumbs";
 
 // ----------------------------------------------------------------------
 

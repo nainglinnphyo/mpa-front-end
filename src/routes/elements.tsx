@@ -53,6 +53,9 @@ export const NewShipArrival = Loadable(
 export const BillOfLandingList = Loadable(
   lazy(() => import("../pages/admin/billoflanding/BillOfLanding"))
 );
+export const NewBLForm = Loadable(
+  lazy(() => import("../sections/billOfLanding/new/New"))
+);
 
 
 export const ProductList = Loadable(

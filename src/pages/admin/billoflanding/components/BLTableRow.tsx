@@ -58,12 +58,12 @@ export default function BLTableRow({
 					<Checkbox checked={selected} onClick={onSelectRow} />
 				</TableCell>
 
-				<TableCell align="center">{blNo}</TableCell>
-				<TableCell align="center">{shipper}</TableCell>
-				<TableCell align="center">{consigneeNotify}</TableCell>
-				<TableCell align="center">{markAndNumber}</TableCell>
-				<TableCell align="center">{product}</TableCell>
-				<TableCell align="center">{quantity} / {unit}</TableCell>
+				<TableCell align="center">{blNo.toUpperCase()}</TableCell>
+				<TableCell align="center">{shipper.toUpperCase()}</TableCell>
+				<TableCell align="center">{consigneeNotify.toUpperCase()}</TableCell>
+				<TableCell align="center">{markAndNumber.toUpperCase()}</TableCell>
+				<TableCell align="center">{product.toUpperCase()}</TableCell>
+				<TableCell align="center">{quantity}  {unit}</TableCell>
 				<TableCell align="center">{freightTon}</TableCell>
 				<TableCell align="center">{rate}</TableCell>
 				<TableCell align="center">{totalFreight}</TableCell>

@@ -29,8 +29,11 @@ import {
 import { BLTableToolbar, BLTableRow } from "./components";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { BLData, fetchBillOfLanding } from "../../../apis/main/ship";
+import AddIcon from "@mui/icons-material/Add";
+import CheckIcon from "@mui/icons-material/CheckOutlined";
+
 
 // ----------------------------------------------------------------------
 
@@ -82,6 +85,7 @@ export default function BillOfLanding() {
 	const { token } = useAppSelector((state) => state.auth);
 
 	const location = useLocation();
+	const navigate = useNavigate();
 
 
 	const dataFiltered = applyFilter({
@@ -134,12 +138,6 @@ export default function BillOfLanding() {
 		setFilterStatus("all");
 	};
 
-	// useEffect(() => {
-	// 	if (data.length) {
-	// 		setTableData(data);
-	// 	}
-	// }, [data]);
-
 	useEffect(() => {
 		fetchBillOfLanding(token, location.state.id)
 			.then((data: any) => {
@@ -149,6 +147,19 @@ export default function BillOfLanding() {
 
 	return (
 		<Container maxWidth="xl">
+			<Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
+				{!location.state.blFinish && <Button
+					sx={{ height: "40px" }}
+					onClick={() => {
+						navigate("/dashboard/ship-arrival/bill-of-landing-create", { state: { shipArrivalId: location.state.id } });
+					}}
+					startIcon={<AddIcon />}
+					variant="contained"
+				>
+					Create New Bill Of Landing
+				</Button>}
+
+			</Box>
 			<Card
 				sx={{
 					width: "100%",
@@ -157,10 +168,16 @@ export default function BillOfLanding() {
 					mt: 2,
 				}}
 			>
-				<Box paddingLeft={3} paddingTop={3}>
-					<Typography fontWeight="bold">{location.state.shipName.toUpperCase()}</Typography>
-					<Typography fontWeight="bold">VOYAGE NO {location.state.voyageNumber.toUpperCase()}</Typography>
-					<Typography fontWeight="bold">SAILED YANGON DATE : {new Date(location.state.arrivalDate).toDateString()}</Typography>
+				<Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+					<Box paddingLeft={3} paddingTop={3}>
+						<Typography fontWeight="bold">{location.state.shipName.toUpperCase()}</Typography>
+						<Typography fontWeight="bold">VOYAGE NO {location.state.voyageNumber.toUpperCase()}</Typography>
+						<Typography fontWeight="bold">SAILED YANGON DATE : {new Date(location.state.arrivalDate).toDateString()}</Typography>
+					</Box>
+					<Box paddingRight={3} paddingTop={3}>
+						{!location.state.blFinish && <Button startIcon={<CheckIcon />} variant="contained" color="secondary">Make BL Finish</Button>}
+
+					</Box>
 				</Box>
 				<BLTableToolbar
 					isFiltered={isFiltered}
