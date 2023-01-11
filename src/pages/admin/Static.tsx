@@ -2,7 +2,7 @@ import React from 'react'
 
 const Static = () => {
   return (
-    <div>Static</div>
+    <div>Static HERER</div>
   )
 }
 
