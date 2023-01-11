@@ -57,7 +57,7 @@ const CreateNewUnit = ({ title, onClose, open, ...other }: ICreateNewUnit) => {
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
       <DialogTitle sx={{ pb: 2 }}>{title}</DialogTitle>
-      <Box sx={{ height: 130, px: 3 }}>
+      <Box sx={{ height: 150, px: 3 }}>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <RHFTextField name="name" label="name" />
 
