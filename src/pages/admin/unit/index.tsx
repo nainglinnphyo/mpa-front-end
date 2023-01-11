@@ -24,9 +24,12 @@ import {
   TableSkeleton,
 } from "../../../components/table";
 // sections
-import { UnitTableRow, UnitTableToolBar } from "./components";
+import { CreateNewUnit, UnitTableRow, UnitTableToolBar } from "./components";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { getUnit } from "../../../store/reducers/unit";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/system";
 
 // ----------------------------------------------------------------------
 
@@ -75,6 +78,7 @@ export default function Unit() {
   const dispatch = useAppDispatch();
   const { data, isLoading } = useAppSelector((state) => state.unit);
   const { token } = useAppSelector((state) => state.auth);
+  const [openModel, setOpenModel] = useState<boolean>(false);
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -136,103 +140,130 @@ export default function Unit() {
     }
   }, [data]);
 
+  const handleCloseConfirm = () => {
+    setOpenModel(false);
+  };
   return (
-    <Container maxWidth="xl">
-      <Card
-        sx={{
-          width: "100%",
-          height: "100%",
-          overflowY: "scroll",
-          mt: 2,
-        }}
-      >
-        <UnitTableToolBar
-          isFiltered={isFiltered}
-          filterName={filterName}
-          onFilterName={handleFilterName}
-          onResetFilter={handleResetFilter}
-        />
+    <>
+      <Container maxWidth="xl">
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
+          <Button
+            sx={{ height: "40px" }}
+            onClick={() => {
+              setOpenModel(true);
+            }}
+            startIcon={<AddIcon />}
+            variant="contained"
+          >
+            Create New Unit
+          </Button>
+        </Box>
 
-        <TableContainer sx={{ position: "relative", overflow: "unset" }}>
-          <TableSelectedAction
-            dense={dense}
-            numSelected={selected.length}
-            rowCount={tableData.length}
-            onSelectAllRows={(checked) =>
-              onSelectAllRows(
-                checked,
-                tableData.map((row) => row.id)
-              )
-            }
-            action={
-              <Tooltip title="Delete">
-                <IconButton color="primary">
-                  <Iconify icon="eva:trash-2-outline" />
-                </IconButton>
-              </Tooltip>
-            }
+        <Card
+          sx={{
+            width: "100%",
+            height: "100%",
+            overflowY: "scroll",
+            mt: 2,
+          }}
+        >
+          <UnitTableToolBar
+            isFiltered={isFiltered}
+            filterName={filterName}
+            onFilterName={handleFilterName}
+            onResetFilter={handleResetFilter}
           />
 
-          {/* <Scrollbar> */}
-          <Table size={dense ? "small" : "medium"} sx={{ minWidth: 800 }}>
-            <TableHeadCustom
-              order={order}
-              orderBy={orderBy}
-              headLabel={TABLE_HEAD}
-              rowCount={tableData.length}
+          <TableContainer sx={{ position: "relative", overflow: "unset" }}>
+            <TableSelectedAction
+              dense={dense}
               numSelected={selected.length}
-              onSort={onSort}
+              rowCount={tableData.length}
               onSelectAllRows={(checked) =>
                 onSelectAllRows(
                   checked,
                   tableData.map((row) => row.id)
                 )
               }
+              action={
+                <Tooltip title="Delete">
+                  <IconButton color="primary">
+                    <Iconify icon="eva:trash-2-outline" />
+                  </IconButton>
+                </Tooltip>
+              }
             />
 
-            <TableBody>
-              {(isLoading ? [...Array(rowsPerPage)] : dataFiltered)
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) =>
-                  row ? (
-                    <UnitTableRow
-                      key={row.id}
-                      row={row}
-                      selected={selected.includes(row.id)}
-                      onSelectRow={() => onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                      onEditRow={() => handleEditRow(row.id)}
-                    />
-                  ) : (
-                    !isNotFound && (
-                      <TableSkeleton key={index} sx={{ height: denseHeight }} />
-                    )
+            {/* <Scrollbar> */}
+            <Table size={dense ? "small" : "medium"} sx={{ minWidth: 800 }}>
+              <TableHeadCustom
+                order={order}
+                orderBy={orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={tableData.length}
+                numSelected={selected.length}
+                onSort={onSort}
+                onSelectAllRows={(checked) =>
+                  onSelectAllRows(
+                    checked,
+                    tableData.map((row) => row.id)
                   )
-                )}
-
-              <TableEmptyRows
-                height={denseHeight}
-                emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+                }
               />
 
-              <TableNoData isNotFound={isNotFound} />
-            </TableBody>
-          </Table>
-          {/* </Scrollbar> */}
-        </TableContainer>
+              <TableBody>
+                {(isLoading ? [...Array(rowsPerPage)] : dataFiltered)
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) =>
+                    row ? (
+                      <UnitTableRow
+                        key={row.id}
+                        row={row}
+                        selected={selected.includes(row.id)}
+                        onSelectRow={() => onSelectRow(row.id)}
+                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onEditRow={() => handleEditRow(row.id)}
+                      />
+                    ) : (
+                      !isNotFound && (
+                        <TableSkeleton
+                          key={index}
+                          sx={{ height: denseHeight }}
+                        />
+                      )
+                    )
+                  )}
 
-        <TablePaginationCustom
-          count={dataFiltered.length}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onPageChange={onChangePage}
-          onRowsPerPageChange={onChangeRowsPerPage}
-          //
-          dense={dense}
-          onChangeDense={onChangeDense}
-        />
-      </Card>
-    </Container>
+                <TableEmptyRows
+                  height={denseHeight}
+                  emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+                />
+
+                <TableNoData isNotFound={isNotFound} />
+              </TableBody>
+            </Table>
+            {/* </Scrollbar> */}
+          </TableContainer>
+
+          <TablePaginationCustom
+            count={dataFiltered.length}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            onPageChange={onChangePage}
+            onRowsPerPageChange={onChangeRowsPerPage}
+            //
+            dense={dense}
+            onChangeDense={onChangeDense}
+          />
+        </Card>
+      </Container>
+      <CreateNewUnit
+        open={openModel}
+        title="Create New Unit"
+        onClose={handleCloseConfirm}
+      />
+      ;
+    </>
   );
 }
 
