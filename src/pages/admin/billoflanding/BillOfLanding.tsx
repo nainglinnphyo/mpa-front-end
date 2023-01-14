@@ -148,11 +148,10 @@ export default function BillOfLanding() {
 			})
 	}, [location])
 
-	// const [isPrint, setIsPrint] = useState(false)
 	const printRef = useRef(null);
 
 	const printHandler = useReactToPrint({
-		// documentTitle: "GG",
+		documentTitle: location.state.voyageNumber.toUpperCase(),
 		content: () => printRef.current,
 	});
 
@@ -274,7 +273,7 @@ export default function BillOfLanding() {
 					onChangeDense={onChangeDense}
 				/>
 			</Card>
-			<Box>
+			<Box style={{ display: "none" }}>
 				<BLPrint printRef={printRef} data={tableData} />
 			</Box>
 		</Container>
