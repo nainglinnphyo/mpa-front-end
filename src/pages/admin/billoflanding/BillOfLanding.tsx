@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 // @mui
 import {
 	Card,
@@ -33,6 +33,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { BLData, fetchBillOfLanding } from "../../../apis/main/ship";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/CheckOutlined";
+import PrintIcon from "@mui/icons-material/LocalPrintshop";
+import BLPrint from "./components/BLPrint";
+import { useReactToPrint } from "react-to-print";
 
 
 // ----------------------------------------------------------------------
@@ -145,6 +148,14 @@ export default function BillOfLanding() {
 			})
 	}, [location])
 
+	// const [isPrint, setIsPrint] = useState(false)
+	const printRef = useRef(null);
+
+	const printHandler = useReactToPrint({
+		// documentTitle: "GG",
+		content: () => printRef.current,
+	});
+
 	return (
 		<Container maxWidth="xl">
 			<Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
@@ -175,8 +186,8 @@ export default function BillOfLanding() {
 						<Typography fontWeight="bold">SAILED YANGON DATE : {new Date(location.state.arrivalDate).toDateString()}</Typography>
 					</Box>
 					<Box paddingRight={3} paddingTop={3}>
+						<Button sx={{ margin: 1 }} onClick={printHandler} startIcon={<PrintIcon />} variant="contained" color="inherit">Print</Button>
 						{!location.state.blFinish && <Button startIcon={<CheckIcon />} variant="contained" color="secondary">Make BL Finish</Button>}
-
 					</Box>
 				</Box>
 				<BLTableToolbar
@@ -263,6 +274,9 @@ export default function BillOfLanding() {
 					onChangeDense={onChangeDense}
 				/>
 			</Card>
+			<Box>
+				<BLPrint printRef={printRef} data={tableData} />
+			</Box>
 		</Container>
 	);
 }
