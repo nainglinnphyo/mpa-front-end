@@ -14,20 +14,23 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormProvider from "../../../../components/hook-form/FormProvider";
 import { LoadingButton } from "@mui/lab";
-import { createNewUnit } from "../../../../apis/main/unit";
+import { createNewUnit, editUnit } from "../../../../apis/main/unit";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { RootState } from "../../../../store";
 import { useSnackbar } from "../../../../components/snackbar";
 import { getUnit } from "../../../../store/reducers/unit";
+import { useCallback, useEffect } from "react";
+import { UnitList } from "..";
 
 interface ICreateNewUnit {
   title: string;
   onClose: () => void;
   open: boolean;
+  data: UnitList;
   other?: any;
 }
 
-const CreateNewUnit = ({ title, onClose, open, ...other }: ICreateNewUnit) => {
+const EditUnit = ({ title, onClose, open, data, ...other }: ICreateNewUnit) => {
   const { token } = useAppSelector((state: RootState) => state.auth);
   const createUnitSchema = Yup.object().shape({
     name: Yup.string().required("name is required"),
@@ -44,9 +47,12 @@ const CreateNewUnit = ({ title, onClose, open, ...other }: ICreateNewUnit) => {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
 
+  const { handleSubmit, reset, setValue } = methods;
+
   const onSubmit = (data: IFormData) => {
-    createNewUnit({ data, token })
+    editUnit({ data, token })
       .then((res) => {
+        console.log(res);
         if (res.data.meta.success) {
           enqueueSnackbar(res.data.meta.success, { variant: "success" });
         }
@@ -63,7 +69,16 @@ const CreateNewUnit = ({ title, onClose, open, ...other }: ICreateNewUnit) => {
       });
   };
 
-  const { handleSubmit, reset } = methods;
+  const defaultValueBinder = useCallback(
+    (item: any) => {
+      setValue("name", item.name);
+    },
+    [data]
+  );
+
+  useEffect(() => {
+    defaultValueBinder(data);
+  }, [data]);
 
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
@@ -90,7 +105,7 @@ const CreateNewUnit = ({ title, onClose, open, ...other }: ICreateNewUnit) => {
               Cancel
             </LoadingButton>
             <LoadingButton type="submit" variant="outlined" color="primary">
-              Unit Create
+              Edit Unit
             </LoadingButton>
           </Stack>
         </FormProvider>
@@ -99,4 +114,4 @@ const CreateNewUnit = ({ title, onClose, open, ...other }: ICreateNewUnit) => {
   );
 };
 
-export default CreateNewUnit;
+export default EditUnit;
