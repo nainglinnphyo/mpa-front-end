@@ -22,7 +22,7 @@ export const createNewUnit = async ({ data, token }: ICreateNewUnit) => {
 export const editUnit = async ({ data, token }: ICreateNewUnit) => {
   return await axios({
     url: `${URL}unit/edit`,
-    method: "POST",
+    method: "PUT",
     headers: authJsonHeader(token),
     data: data,
   });

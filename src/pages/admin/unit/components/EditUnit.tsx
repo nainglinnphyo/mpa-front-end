@@ -52,6 +52,7 @@ const EditUnit = ({ title, onClose, open, data, ...other }: ICreateNewUnit) => {
   const onSubmit = (data: IFormData) => {
     editUnit({ data, token })
       .then((res) => {
+        console.log(res);
         if (res.data.meta.success) {
           enqueueSnackbar(res.data.meta.success, { variant: "success" });
         }
@@ -104,7 +105,7 @@ const EditUnit = ({ title, onClose, open, data, ...other }: ICreateNewUnit) => {
               Cancel
             </LoadingButton>
             <LoadingButton type="submit" variant="outlined" color="primary">
-              Unit Create
+              Edit Unit
             </LoadingButton>
           </Stack>
         </FormProvider>
