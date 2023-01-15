@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 // @mui
 import {
   Card,
@@ -34,6 +34,9 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import AddIcon from "@mui/icons-material/Add";
 import { getShipArrival } from "../../../store/reducers/shipArrival";
 import moment from "moment";
+import { useReactToPrint } from "react-to-print";
+import PrintIcon from "@mui/icons-material/LocalPrintshop";
+import ShipArrivalPrint from "./components/ShipArrivalPrint";
 
 // ----------------------------------------------------------------------
 
@@ -52,16 +55,18 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export interface ShipArrivalList {
-	id: string;
-	voyageNumber: string;
-	blFinish: boolean;
-	ship: string;
-	port: string;
-	countryOrigin: string;
-	countryReturn: string;
-	arrivalDate: string;
-	returnDate: string;
-	createdDate: string;
+  id: string;
+  voyageNumber: string;
+  blFinish: boolean;
+  ship: string;
+  port: string;
+  countryOrigin: string;
+  countryReturn: string;
+  arrivalDate: string;
+  returnDate: string;
+  dischargeData: any;
+  loadingData: any;
+  createdDate: string;
 }
 
 export default function ShipArrivalPage() {
@@ -174,9 +179,18 @@ export default function ShipArrivalPage() {
 
   const navigate = useNavigate();
 
+  const printRef = useRef(null);
+
+  const printHandler = useReactToPrint({
+    documentTitle: "",
+    content: () => printRef.current,
+  });
+
+
   return (
     <Container maxWidth="xl">
       <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
+        <Button sx={{ marginRight: 1, height: "40px" }} onClick={printHandler} startIcon={<PrintIcon />} variant="contained" color="primary">Print</Button>
         <Button
           sx={{ height: "40px" }}
           onClick={() => {
@@ -269,7 +283,7 @@ export default function ShipArrivalPage() {
                 emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
               />
 
-              <TableNoData isNotFound={isNotFound} /> 
+              <TableNoData isNotFound={isNotFound} />
             </TableBody>
           </Table>
           {/* </Scrollbar> */}
@@ -286,6 +300,9 @@ export default function ShipArrivalPage() {
           onChangeDense={onChangeDense}
         />
       </Card>
+      <Box sx={{ display: "none" }}>
+        <ShipArrivalPrint printRef={printRef} data={tableData} />
+      </Box>
     </Container>
   );
 }

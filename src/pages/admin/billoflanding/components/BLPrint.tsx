@@ -16,7 +16,7 @@ function BLPrint({ printRef, data }: IProp) {
      };
      var trStyle = {
           "border": "1px",
-          "border-style": "solid",
+          "borderStyle": "solid",
           "padding": "10px",
      };
      return (

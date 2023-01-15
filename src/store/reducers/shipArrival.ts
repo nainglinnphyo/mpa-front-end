@@ -3,7 +3,9 @@ import axios from "axios";
 import { dispatch } from "..";
 const URL = import.meta.env.VITE_APP_SERVER_URL;
 
-
+// interface dischargeItme {
+     
+// }
 interface IShipArrivalData {
      id: string;
      voyageNumber: string;
@@ -15,6 +17,8 @@ interface IShipArrivalData {
      arrivalDate: string;
      returnDate: string;
      createdDate: string;
+     dischargeData:any;
+     loadingData:any;
 }
 
 interface IShipArrival {
@@ -65,7 +69,6 @@ export function getShipArrival(token: string, value: any) {
                     .then((response) => response)
                     .catch((err) => err.response);
                if (resWithAxios.data.meta.success) {
-                    console.log(resWithAxios.data.body)
                     let temp: IShipArrivalData[] = await resWithAxios.data.body.map((item: any) => ({
                          id: item.id,
                          voyageNumber: item.voyageNumber,
@@ -74,6 +77,8 @@ export function getShipArrival(token: string, value: any) {
                          port: item.Port.name,
                          countryOrigin: item.countryOrigin.name || "",
                          countryReturn: item.countryReturn.name || "",
+                         dischargeData:item.PortOfDischarge.DischargeOnProduct,
+                         loadingData:item.PortOfLoading.LoadingOnProduct,
                          arrivalDate: item.arrivalDate,
                          returnDate: item.returnDate,
                          createdDate: item.created_at,
