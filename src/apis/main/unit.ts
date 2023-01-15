@@ -10,7 +10,7 @@ interface ICreateNewUnit {
 
 export const createNewUnit = async ({ name, token }: ICreateNewUnit) => {
   return await axios({
-    url: `${URL}`,
+    url: `${URL}unit/create`,
     method: "POST",
     headers: authJsonHeader(token),
     data: name,
