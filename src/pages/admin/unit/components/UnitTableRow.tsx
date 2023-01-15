@@ -12,6 +12,7 @@ import MenuPopover from "../../../../components/menu-popover";
 // import { PortList } from "../Port";
 import { UnitList } from "../index";
 import moment from "moment";
+import EditUnit from "./EditUnit";
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +33,7 @@ export default function UnitTableRow({
 }: Props) {
   const { id, name, created_at } = row;
 
-  const [openConfirm, setOpenConfirm] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
   const [openPopover, setOpenPopover] = useState<HTMLElement | null>(null);
 
@@ -94,7 +95,7 @@ export default function UnitTableRow({
 
         <MenuItem
           onClick={() => {
-            onEditRow();
+            handleOpenConfirm();
             handleClosePopover();
           }}
         >
@@ -102,6 +103,15 @@ export default function UnitTableRow({
           Edit
         </MenuItem>
       </MenuPopover>
+
+      {openConfirm && (
+        <EditUnit
+          onClose={handleCloseConfirm}
+          open={openConfirm}
+          title="Edit Unit"
+          data={row}
+        />
+      )}
     </>
   );
 }

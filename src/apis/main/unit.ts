@@ -18,3 +18,12 @@ export const createNewUnit = async ({ data, token }: ICreateNewUnit) => {
     data: data,
   });
 };
+
+export const editUnit = async ({ data, token }: ICreateNewUnit) => {
+  return await axios({
+    url: `${URL}unit/edit`,
+    method: "POST",
+    headers: authJsonHeader(token),
+    data: data,
+  });
+};
