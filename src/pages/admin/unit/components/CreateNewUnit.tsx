@@ -15,8 +15,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import FormProvider from "../../../../components/hook-form/FormProvider";
 import { LoadingButton } from "@mui/lab";
 import { createNewUnit } from "../../../../apis/main/unit";
-import { useAppSelector } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { RootState } from "../../../../store";
+import { useSnackbar } from "../../../../components/snackbar";
+import { getUnit } from "../../../../store/reducers/unit";
 
 interface ICreateNewUnit {
   title: string;
@@ -39,16 +41,25 @@ const CreateNewUnit = ({ title, onClose, open, ...other }: ICreateNewUnit) => {
     resolver: yupResolver(createUnitSchema),
   });
 
-  const onSubmit = (data: IFormData) => {
-    const { name } = data;
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useAppDispatch();
 
-    createNewUnit({ name, token })
+  const onSubmit = (data: IFormData) => {
+    createNewUnit({ data, token })
       .then((res) => {
-        console.log(res);
+        if (res.data.meta.success) {
+          enqueueSnackbar(res.data.meta.success, { variant: "success" });
+        }
+        onClose();
+        reset();
+        dispatch(getUnit(token));
       })
       .catch((err) => {
-        console.log(err);
+        enqueueSnackbar(err.response.data.meta.devMessage, {
+          variant: "error",
+        });
         onClose();
+        reset();
       });
   };
 
